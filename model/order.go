@@ -1,10 +1,10 @@
 package controllers
 
 type Order struct {
-	customer    Customer `form:"customer" json:"customer"`
-	date        string   `form:"date" json:"date"`
-	order_id    int      `form:"order_id" json:"order_id"`
-	rating      int      `form:"rating" json:"rating"`
-	status      string   `form:"status" json:"status"`
-	total_price int      `form:"total_price" json:"total_price"`
+	Customer    Customer `form:"customer" json:"customer"`
+	Date        string   `form:"date" json:"date"`
+	Order_id    int      `form:"order_id" json:"order_id"`
+	Rating      int      `form:"rating" json:"rating"`
+	Status      string   `form:"status" json:"status"`
+	Total_price int      `form:"total_price" json:"total_price"`
 }
