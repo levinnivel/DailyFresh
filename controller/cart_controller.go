@@ -1,20 +1,18 @@
 package controllers
 
-import (
-	"encoding/json"
-	"log"
+// "encoding/json"
+// "log"
 
-	model "DailyFresh-Backend/model"
-)
+// model "DailyFresh-Backend/model"
 
 func addGoods() {
-	
+
 }
 
 func removeGoods() {
-	
+
 }
 
 func checkout() {
-	
+
 }

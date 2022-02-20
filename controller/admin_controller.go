@@ -1,28 +1,26 @@
 package controllers
 
-import (
-	"encoding/json"
-	"log"
+// "encoding/json"
+// "log"
 
-	model "DailyFresh-Backend/model"
-)
+// model "DailyFresh-Backend/model"
 
 func banAccount() {
-	
+
 }
 
 func chat() {
-	
+
 }
 
 func getOrderHistory() {
-	
+
 }
 
 func getProduct() {
-	
+
 }
 
 func replyTicket() {
-	
+
 }
