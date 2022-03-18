@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Goods struct {
 	Description string `form:"description" json:"description"`

@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 // "encoding/json"
 // "log"

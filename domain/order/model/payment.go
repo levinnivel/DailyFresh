@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Payment struct {
 	Amount int    `form:"amount" json:"amount"`

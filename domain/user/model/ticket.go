@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Ticket struct {
 	Ticket_ID int    `form:"ticket_id" json:"ticket_id"`
