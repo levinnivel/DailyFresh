@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Order struct {
 	Customer    Customer `form:"customer" json:"customer"`

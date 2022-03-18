@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Seller struct {
 	User

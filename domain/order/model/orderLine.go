@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type OrderLine struct {
 	Goods      Goods `form:"goods" json:"goods"`

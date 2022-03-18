@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type Customer struct {
 	User

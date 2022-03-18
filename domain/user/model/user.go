@@ -1,4 +1,4 @@
-package controllers
+package model
 
 type User struct {
 	ID       int    `form:"id" json:"id"`
