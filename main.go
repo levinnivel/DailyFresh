@@ -5,6 +5,7 @@ import (
 	"time"
 
 	userController "DailyFresh-Backend/domain/user/controller"
+	goodsController "DailyFresh-Backend/domain/goods/controller"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,8 @@ func main() {
 		admin.GET("/users", userController.GetAllUsers)
 		// Menghapus user
 		admin.DELETE("/:user_id", userController.BanAccount)
+		// Melihat seluruh goods
+		admin.GET("/goods", goodsController.GetAllGoods)
 	}
 
 	router.Run(":8080")
