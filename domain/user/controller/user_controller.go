@@ -117,7 +117,7 @@ func RegistrasiCustomer(c *gin.Context) {
 	var response1 model.UserResponse
 	if errQuery == nil {
 		response1.Message = "Berhasil Input User"
-		rsp.SendUserSuccessresponse(c, response1)
+		rsp.SendUserSuccessResponse(c, response1)
 	} else {
 		response1.Message = "Gagal Input User"
 		log.Print(errQuery.Error())
@@ -135,7 +135,7 @@ func RegistrasiCustomer(c *gin.Context) {
 	var response2 model.UserResponse
 	if errQuery2 == nil {
 		response2.Message = "Berhasil Registrasi Customer"
-		rsp.SendUserSuccessresponse(c, response2)
+		rsp.SendUserSuccessResponse(c, response2)
 	} else {
 		response2.Message = "Gagal Registrasi Customer"
 		log.Print(errQuery.Error())
