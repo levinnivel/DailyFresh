@@ -34,7 +34,9 @@ func UserRouter() {
 	// Admin
 	admin := router.Group("/admin")
 	{
-		// Menghapus member
+		// Melihat seluruh user
+		admin.GET("/users", userController.GetAllUsers)
+		// Menghapus user
 		admin.DELETE("/:user_id", userController.BanAccount)
 	}
 
