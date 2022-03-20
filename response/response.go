@@ -25,3 +25,12 @@ func SendGoodsSuccessResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
 func SendGoodsErrorResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
 	c.JSON(http.StatusBadRequest, ur)
 }
+
+// Ticket Response
+func SendTicketSuccessResponse(c *gin.Context, ur userModel.TicketResponse) {
+	c.JSON(http.StatusOK, ur)
+}
+
+func SendTicketErrorResponse(c *gin.Context, ur userModel.TicketResponse) {
+	c.JSON(http.StatusBadRequest, ur)
+}

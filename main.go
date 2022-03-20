@@ -41,8 +41,10 @@ func main() {
 		admin.GET("/users", userController.GetAllUsers)
 		// Menghapus user
 		admin.DELETE("/:user_id", userController.BanAccount)
-		// Melihat seluruh goods
+		// Melihat seluruh barang
 		admin.GET("/goods", goodsController.GetAllGoods)
+		// Melihat seluruh tiket
+		admin.GET("/ticket", userController.GetAllTickets)
 	}
 
 	router.Run(":8080")

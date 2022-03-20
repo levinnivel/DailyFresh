@@ -26,7 +26,7 @@ func GetAllGoods(c *gin.Context) {
 	var goodies []model.Goods
 	for rows.Next() {
 		if err := rows.Scan(&goods.ID, &goods.Name, &goods.Price, &goods.Description,
-			&goods.Stock, &goods.Image, &goods.Seller.UserID); err != nil {
+			&goods.Stock, &goods.Image, &goods.SellerID); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			goodies = append(goodies, goods)
