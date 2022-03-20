@@ -2,6 +2,7 @@ package controller
 
 import (
 	"log"
+	"strconv"
 
 	dbHandler "DailyFresh-Backend/database"
 	model "DailyFresh-Backend/domain/user/model"
@@ -89,5 +90,55 @@ func GetAllUsers(c *gin.Context) {
 	} else {
 		response.Message = "Get User Query Error"
 		rsp.SendUserErrorResponse(c, response)
+	}
+}
+
+// Registrasi Customer...
+func RegistrasiCustomer(c *gin.Context) {
+	db := dbHandler.Connect()
+	defer db.Close()
+
+	name := c.PostForm("name")
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+	phone := c.PostForm("phone")
+	typePerson := 1
+	custAddress := c.PostForm("cust_address")
+	balance, _ := strconv.Atoi(c.PostForm("balance"))
+
+	_, errQuery := db.Exec("INSERT INTO user (name, email, password, phone, type_person) values (?,?,?,?,?)",
+		name,
+		email,
+		password,
+		phone,
+		typePerson,
+	)
+
+	var response1 model.UserResponse
+	if errQuery == nil {
+		response1.Message = "Berhasil Input User"
+		rsp.SendUserSuccessresponse(c, response1)
+	} else {
+		response1.Message = "Gagal Input User"
+		log.Print(errQuery.Error())
+		rsp.SendUserErrorResponse(c, response1)
+	}
+
+	userID := c.PostForm("user_id")
+
+	_, errQuery2 := db.Exec("INSERT INTO customer (user_id, cust_address, balance) values (?,?,?)",
+		userID,
+		custAddress,
+		balance,
+	)
+
+	var response2 model.UserResponse
+	if errQuery2 == nil {
+		response2.Message = "Berhasil Registrasi Customer"
+		rsp.SendUserSuccessresponse(c, response2)
+	} else {
+		response2.Message = "Gagal Registrasi Customer"
+		log.Print(errQuery.Error())
+		rsp.SendUserErrorResponse(c, response2)
 	}
 }
