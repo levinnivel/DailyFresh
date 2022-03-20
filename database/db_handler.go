@@ -5,8 +5,8 @@ import (
 	"log"
 )
 
-func connect() *sql.DB {
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/df_backend?parseTime=true&loc=Asia%2FJakarta")
+func Connect() *sql.DB {
+	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/daily_fresh?parseTime=true&loc=Asia%2FJakarta")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,12 +1,30 @@
 package controller
 
-// "encoding/json"
-// "log"
+import (
+	dbHandler "DailyFresh-Backend/database"
 
-// model "DailyFresh-Backend/model"
+	"github.com/gin-gonic/gin"
+)
 
-func banAccount() {
+// Ban Account...
+func BanAccount(c *gin.Context) {
+	db := dbHandler.Connect()
+	defer db.Close()
 
+	userId := c.Param("user_id")
+
+	_, errQuery := db.Exec("DELETE FROM user WHERE id=?",
+		userId,
+	)
+
+	// var response model.UserResponse
+	if errQuery == nil {
+		// response.Message = "Delete User Success"
+		// sendUserSuccessresponse(c, response)
+	} else {
+		// response.Message = "Delete User Failed Error"
+		// sendUserErrorResponse(c, response)
+	}
 }
 
 func chat() {

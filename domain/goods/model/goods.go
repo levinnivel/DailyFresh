@@ -1,10 +1,20 @@
 package model
 
+import (
+	User "DailyFresh-Backend/domain/user/model"
+)
+
 type Goods struct {
-	Description string `form:"description" json:"description"`
-	Goods_ID    int    `form:"goods_id" json:"goods_id"`
+	ID          int    `form:"id" json:"id"`
 	Name        string `form:"name" json:"name"`
-	Price       int    `form:"Price" json:"Price"`
+	Price       int    `form:"price" json:"price"`
+	Description string `form:"description" json:"description"`
 	Stock       int    `form:"stock" json:"stock"`
-	Seller
+	Image       string `form:"image" json:"image"`
+	User.Seller
+}
+
+type GoodsResponse struct {
+	Message string  `form:"message" json:"message"`
+	Data    []Goods `form:"data" json:"data"`
 }
