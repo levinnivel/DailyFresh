@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	userController "DailyFresh-Backend/domain/user/controller"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -25,6 +27,20 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+
+	// Login
+	router.POST("/login", userController.Login)
+	// Logout
+	router.GET("/logout", userController.Logout)
+
+	// Admin
+	admin := router.Group("/admin")
+	{
+		// Melihat seluruh user
+		admin.GET("/users", userController.GetAllUsers)
+		// Menghapus user
+		admin.DELETE("/:user_id", userController.BanAccount)
+	}
 
 	router.Run(":8080")
 	fmt.Println("Connected to port 8080")
