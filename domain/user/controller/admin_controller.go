@@ -22,7 +22,7 @@ func BanAccount(c *gin.Context) {
 	var response model.UserResponse
 	if errQuery == nil {
 		response.Message = "Delete User Success"
-		rsp.SendUserSuccessresponse(c, response)
+		rsp.SendUserSuccessResponse(c, response)
 	} else {
 		response.Message = "Delete User Failed Error"
 		rsp.SendUserErrorResponse(c, response)
