@@ -8,3 +8,8 @@ type User struct {
 	Phone      int    `form:"phone" json:"phone"`
 	TypePerson string `form:"type_person" json:"type_person"`
 }
+
+type UserResponse struct {
+	Message string `form:"message" json:"message"`
+	Data    []User `form:"data" json:"data"`
+}

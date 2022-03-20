@@ -2,6 +2,8 @@ package controller
 
 import (
 	dbHandler "DailyFresh-Backend/database"
+	model "DailyFresh-Backend/domain/user/model"
+	rsp "DailyFresh-Backend/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,13 +19,13 @@ func BanAccount(c *gin.Context) {
 		userId,
 	)
 
-	// var response model.UserResponse
+	var response model.UserResponse
 	if errQuery == nil {
-		// response.Message = "Delete User Success"
-		// sendUserSuccessresponse(c, response)
+		response.Message = "Delete User Success"
+		rsp.SendUserSuccessresponse(c, response)
 	} else {
-		// response.Message = "Delete User Failed Error"
-		// sendUserErrorResponse(c, response)
+		response.Message = "Delete User Failed Error"
+		rsp.SendUserErrorResponse(c, response)
 	}
 }
 
