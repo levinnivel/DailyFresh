@@ -38,7 +38,7 @@ func Login(c *gin.Context) {
 
 		generateToken(c, user.ID, user.Name, user.Email)
 		response.Message = "Login Success"
-		rsp.SendUserSuccessresponse(c, response)
+		rsp.SendUserSuccessResponse(c, response)
 	} else {
 		response.Message = "Login Error"
 		rsp.SendUserErrorResponse(c, response)
@@ -51,7 +51,7 @@ func Logout(c *gin.Context) {
 
 	var response model.UserResponse
 	response.Message = "Logout Success"
-	rsp.SendUserSuccessresponse(c, response)
+	rsp.SendUserSuccessResponse(c, response)
 }
 
 // Get All Users
@@ -85,7 +85,7 @@ func GetAllUsers(c *gin.Context) {
 	if err == nil {
 		response.Message = "Get User Success"
 		response.Data = users
-		rsp.SendUserSuccessresponse(c, response)
+		rsp.SendUserSuccessResponse(c, response)
 	} else {
 		response.Message = "Get User Query Error"
 		rsp.SendUserErrorResponse(c, response)
