@@ -2,7 +2,6 @@ package controller
 
 import (
 	"log"
-	"strconv"
 
 	dbHandler "DailyFresh-Backend/database"
 	model "DailyFresh-Backend/domain/user/model"
@@ -93,52 +92,23 @@ func GetAllUsers(c *gin.Context) {
 	}
 }
 
-// Registrasi Customer...
-func RegistrasiCustomer(c *gin.Context) {
+// Delete User...
+func DeleteUser(c *gin.Context) {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	name := c.PostForm("name")
-	email := c.PostForm("email")
-	password := c.PostForm("password")
-	phone := c.PostForm("phone")
-	typePerson := 1
-	custAddress := c.PostForm("cust_address")
-	balance, _ := strconv.Atoi(c.PostForm("balance"))
+	userId := c.Param("user_id")
 
-	_, errQuery := db.Exec("INSERT INTO user (name, email, password, phone, type_person) values (?,?,?,?,?)",
-		name,
-		email,
-		password,
-		phone,
-		typePerson,
+	_, errQuery := db.Exec("DELETE FROM users WHERE id=?",
+		userId,
 	)
 
-	var response1 model.UserResponse
+	var response model.UserResponse
 	if errQuery == nil {
-		response1.Message = "Berhasil Input User"
-		rsp.SendUserSuccessResponse(c, response1)
+		response.Message = "Delete User Success"
+		rsp.SendUserSuccessResponse(c, response)
 	} else {
-		response1.Message = "Gagal Input User"
-		log.Print(errQuery.Error())
-		rsp.SendUserErrorResponse(c, response1)
-	}
-
-	userID := c.PostForm("user_id")
-
-	_, errQuery2 := db.Exec("INSERT INTO customer (user_id, cust_address, balance) values (?,?,?)",
-		userID,
-		custAddress,
-		balance,
-	)
-
-	var response2 model.UserResponse
-	if errQuery2 == nil {
-		response2.Message = "Berhasil Registrasi Customer"
-		rsp.SendUserSuccessResponse(c, response2)
-	} else {
-		response2.Message = "Gagal Registrasi Customer"
-		log.Print(errQuery.Error())
-		rsp.SendUserErrorResponse(c, response2)
+		response.Message = "Delete User Failed Error"
+		rsp.SendUserSuccessResponse(c, response)
 	}
 }

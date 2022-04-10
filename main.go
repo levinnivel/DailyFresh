@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	userController "DailyFresh-Backend/domain/user/controller"
 	goodsController "DailyFresh-Backend/domain/goods/controller"
+	userController "DailyFresh-Backend/domain/user/controller"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -45,6 +45,21 @@ func main() {
 		admin.GET("/goods", goodsController.GetAllGoods)
 		// Melihat seluruh tiket
 		admin.GET("/ticket", userController.GetAllTickets)
+		// Membalas tiket
+		admin.PUT("/reply/:id", userController.ReplyTicket)
+	}
+
+	//Customer
+	customer := router.Group("/customer")
+	{
+		//Membuat tiket
+		customer.GET("/ticket", userController.PostTicket)
+	}
+
+	//Seller
+	seller := router.Group("/seller")
+	{
+		seller.GET("/goods/:seller_id", goodsController.GetGoodsBySeller)
 	}
 
 	router.Run(":8080")
