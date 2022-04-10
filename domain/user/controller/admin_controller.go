@@ -4,6 +4,7 @@ import (
 	dbHandler "DailyFresh-Backend/database"
 	model "DailyFresh-Backend/domain/user/model"
 	rsp "DailyFresh-Backend/response"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,18 +30,45 @@ func BanAccount(c *gin.Context) {
 	}
 }
 
-func chat() {
-
-}
-
 func getOrderHistory() {
 
 }
 
-func getProduct() {
+func getGoods() {
 
 }
 
-func replyTicket() {
+func updateOrder() {
 
+}
+
+// Reply Ticket
+func ReplyTicket(c *gin.Context) {
+	db := dbHandler.Connect()
+	defer db.Close()
+
+	id := c.Param("id")
+	reply := c.PostForm("reply")
+
+	rows, _ := db.Query("SELECT * FROM ticket WHERE id='" + id + "'")
+	var ticket model.Ticket
+	for rows.Next() {
+		if err := rows.Scan(&ticket.ID, &ticket.Category, &ticket.Inquiry, &ticket.Reply, &ticket.UserID); err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+
+	_, errQuery := db.Exec("UPDATE ticket SET reply = ? WHERE id=?",
+		reply,
+		id,
+	)
+
+	var response model.TicketResponse
+	if errQuery == nil {
+		response.Message = "Reply Ticket Success"
+		rsp.SendTicketSuccessResponse(c, response)
+	} else {
+		response.Message = "Reply Ticket Failed Error"
+		rsp.SendTicketErrorResponse(c, response)
+	}
 }

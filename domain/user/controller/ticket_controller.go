@@ -42,3 +42,29 @@ func GetAllTickets(c *gin.Context) {
 		rsp.SendTicketErrorResponse(c, response)
 	}
 }
+
+// PostTicket...
+func PostTicket(c *gin.Context) {
+	db := dbHandler.Connect()
+	defer db.Close()
+
+	category := c.PostForm("category")
+	inquiry := c.PostForm("inquiry")
+	userId := c.PostForm("user_id")
+
+	_, errQuery := db.Exec("INSERT INTO ticket (category, inquiry, user_id) values (?,?,?)",
+		category,
+		inquiry,
+		userId,
+	)
+
+	var response model.TicketResponse
+	if errQuery == nil {
+		response.Message = "Berhasil Post Ticket!"
+		rsp.SendTicketSuccessResponse(c, response)
+	} else {
+		response.Message = "Gagal Post Ticket!"
+		log.Print(errQuery.Error())
+		rsp.SendTicketErrorResponse(c, response)
+	}
+}
