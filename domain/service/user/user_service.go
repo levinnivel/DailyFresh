@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 
+	Auth "DailyFresh-Backend/authentication"
 	Repo "DailyFresh-Backend/domain/repository/user"
 	Response "DailyFresh-Backend/response"
 
@@ -10,32 +11,32 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// func Login(c *gin.Context) {
-// 	email := c.PostForm("email")
-// 	password := c.PostForm("password")
+func Login(c *gin.Context) {
+	email := c.PostForm("email")
+	password := c.PostForm("password")
 
-// 	login := Repo.Login(email, password)
+	login := Repo.Login(email, password)
 
-// 	generate_status := Auth.GenerateToken(c, login.ID, login.Name, login.Email)
+	generate_status := Auth.GenerateToken(c, login.ID, login.Name, login.Email)
 
-// 	var responses Response.Response
+	var responses Response.Response
 
-// 	if generate_status {
-// 		responses.Message = "Login Success"
-// 		responses.Status = 200
-// 	} else {
-// 		responses.Message = "Login Error"
-// 		responses.Status = 400
-// 	}
-// }
+	if generate_status {
+		responses.Message = "Login Success"
+		responses.Status = 200
+	} else {
+		responses.Message = "Login Error"
+		responses.Status = 400
+	}
+}
 
-// func Logout(c *gin.Context) {
-// 	Auth.ResetUserToken(c)
+func Logout(c *gin.Context) {
+	Auth.ResetUserToken(c)
 
-// 	var responses Response.Response
-// 	responses.Message = "Logout Success"
-// 	responses.Status = 200
-// }
+	var responses Response.Response
+	responses.Message = "Logout Success"
+	responses.Status = 200
+}
 
 func GetUsers(c *gin.Context) {
 	id := c.Param("user_id")
