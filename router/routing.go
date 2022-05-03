@@ -1,7 +1,6 @@
 package router
 
 import (
-	Auth "DailyFresh-Backend/authentication/controller"
 	User "DailyFresh-Backend/domain/controller/user"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +8,6 @@ import (
 )
 
 func GetEndPoints(router *gin.Engine) {
-	Auth.Routes(router)
 	User.Routes(router)
 	// goods.Routes(router)
 }
