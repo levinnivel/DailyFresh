@@ -4,7 +4,7 @@ import (
 	"log"
 
 	dbHandler "DailyFresh-Backend/database"
-	model "DailyFresh-Backend/domain/user/model"
+	model "DailyFresh-Backend/domain/model/user"
 	rsp "DailyFresh-Backend/response"
 
 	"github.com/gin-gonic/gin"

@@ -1,36 +1,43 @@
-package controllers
+package response
 
-import (
-	"net/http"
+// import (
+// 	"net/http"
 
-	userModel "DailyFresh-Backend/domain/user/model"
-	goodsModel	"DailyFresh-Backend/domain/goods/model"
-	"github.com/gin-gonic/gin"
-)
+// 	goodsModel "DailyFresh-Backend/domain/goods/model"
+// 	userModel "DailyFresh-Backend/domain/user/model"
 
-// User Response
-func SendUserSuccessResponse(c *gin.Context, ur userModel.UserResponse) {
-	c.JSON(http.StatusOK, ur)
+// 	"github.com/gin-gonic/gin"
+// )
+
+type Response struct {
+	Status  int         `form:"status" json:"status"`
+	Message string      `form:"message" json:"message"`
+	Data    interface{} `form:"data" json:"data"`
 }
 
-func SendUserErrorResponse(c *gin.Context, ur userModel.UserResponse) {
-	c.JSON(http.StatusBadRequest, ur)
-}
+// // User Response
+// func SendUserSuccessResponse(c *gin.Context, ur userModel.UserResponse) {
+// 	c.JSON(http.StatusOK, ur)
+// }
 
-// Goods Response
-func SendGoodsSuccessResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
-	c.JSON(http.StatusOK, ur)
-}
+// func SendUserErrorResponse(c *gin.Context, ur userModel.UserResponse) {
+// 	c.JSON(http.StatusBadRequest, ur)
+// }
 
-func SendGoodsErrorResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
-	c.JSON(http.StatusBadRequest, ur)
-}
+// // Goods Response
+// func SendGoodsSuccessResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
+// 	c.JSON(http.StatusOK, ur)
+// }
 
-// Ticket Response
-func SendTicketSuccessResponse(c *gin.Context, ur userModel.TicketResponse) {
-	c.JSON(http.StatusOK, ur)
-}
+// func SendGoodsErrorResponse(c *gin.Context, ur goodsModel.GoodsResponse) {
+// 	c.JSON(http.StatusBadRequest, ur)
+// }
 
-func SendTicketErrorResponse(c *gin.Context, ur userModel.TicketResponse) {
-	c.JSON(http.StatusBadRequest, ur)
-}
+// // Ticket Response
+// func SendTicketSuccessResponse(c *gin.Context, ur userModel.TicketResponse) {
+// 	c.JSON(http.StatusOK, ur)
+// }
+
+// func SendTicketErrorResponse(c *gin.Context, ur userModel.TicketResponse) {
+// 	c.JSON(http.StatusBadRequest, ur)
+// }

@@ -8,8 +8,3 @@ type Ticket struct {
 	UserID   int    `form:"user_id" json:"user_id"`
 	User
 }
-
-type TicketResponse struct {
-	Message string  	`form:"message" json:"message"`
-	Data    []Ticket 	`form:"data" json:"data"`
-}
