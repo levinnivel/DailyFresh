@@ -4,13 +4,13 @@ import (
 	"log"
 
 	dbHandler "DailyFresh-Backend/database"
-	model "DailyFresh-Backend/domain/goods/model"
+	model "DailyFresh-Backend/domain/model/goods"
 	rsp "DailyFresh-Backend/response"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Get All Users
+// Get All Goods
 func GetAllGoods(c *gin.Context) {
 	db := dbHandler.Connect()
 	defer db.Close()
