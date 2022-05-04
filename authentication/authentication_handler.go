@@ -11,13 +11,13 @@ var jwtKey = []byte("DailyFresh")
 var tokenName = "token"
 
 type Claims struct {
-	ID    int    `json:"id"`
+	ID    int64  `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(c *gin.Context, id int, name string, email string) bool {
+func GenerateToken(c *gin.Context, id int64, name string, email string) bool {
 	tokenExpiryTime := time.Now().Add(60 * time.Minute)
 
 	claims := &Claims{
@@ -73,7 +73,7 @@ func ResetUserToken(c *gin.Context) {
 // 	return false
 // }
 
-func validateTokenFromCookies(c *gin.Context) (bool, int, string, string) {
+func validateTokenFromCookies(c *gin.Context) (bool, int64, string, string) {
 	if cookie, err := c.Cookie(tokenName); err == nil {
 		accessToken := cookie
 		accessClaims := &Claims{}
