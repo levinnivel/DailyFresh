@@ -54,5 +54,4 @@ func PostTicket(Ticket Model.Ticket) bool {
 	} else {
 		return false
 	}
-
 }

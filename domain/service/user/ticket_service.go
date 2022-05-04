@@ -42,7 +42,7 @@ func PostTicket(c *gin.Context) {
 	SuccessPost := Repo.PostTicket(Ticket)
 
 	var responses Response.Response
-	if SuccessPost == true {
+	if SuccessPost {
 		responses.Message = "Success Post Ticket"
 		responses.Status = 200
 	} else {
