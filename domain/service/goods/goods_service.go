@@ -27,3 +27,20 @@ func GetGoods(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, responses)
 }
+
+func GetGoodsBySeller(c *gin.Context) {
+	id := c.Query("seller_id")
+	goods := Repo.GetGoodsBySeller(id)
+
+	var responses Response.Response
+	if goods != nil {
+		responses.Message = "Get Goods By Seller success"
+		responses.Status = 200
+		responses.Data = goods
+	} else {
+		responses.Message = "Get Goods By Seller failed"
+		responses.Status = 400
+	}
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
+}

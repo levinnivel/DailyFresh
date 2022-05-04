@@ -78,10 +78,10 @@ func UpdateSeller(c *gin.Context) {
 
 	var responses Response.Response
 	if SuccessPost {
-		responses.Message = "Success Post Customer"
+		responses.Message = "Success Update Seller"
 		responses.Status = 200
 	} else {
-		responses.Message = "Failed Post Customer"
+		responses.Message = "Failed Update Seller"
 		responses.Status = 400
 	}
 
