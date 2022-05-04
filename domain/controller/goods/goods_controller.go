@@ -7,7 +7,8 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-	router.GET("/goods/:id", Service.GetGoods)
+	router.GET("/goods", Service.GetGoods)
+	router.GET("/goods/by_seller", Service.GetGoodsBySeller)
 }
 
 // // GetGoods...

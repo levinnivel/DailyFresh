@@ -37,19 +37,12 @@ func GetGoods(id string) []Model.Goods {
 	return goodies
 }
 
-// GetGoods...
-func GetGoodsBySellerId(id string) []Model.Goods {
+// GetGoodsBySeller...
+func GetGoodsBySeller(id string) []Model.Goods {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT goods.name, goods.price, goods.description, goods.stock, goods.image, " +
-		"seller.seller_address" +
-		"FROM goods JOIN seller ON goods.seller_id = seller.user_id " +
-		"WHERE type_person='customer'"
-
-	if id != "" {
-		query += " WHERE id='" + id + "'"
-	}
+	query := "SELECT * FROM goods WHERE seller_id='" + id + "'"
 
 	rows, err := db.Query(query)
 	if err != nil {
