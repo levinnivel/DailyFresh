@@ -62,3 +62,24 @@ func GetGoodsBySeller(id string) []Model.Goods {
 
 	return goodies
 }
+
+func PostGoods(Goods Model.Goods) bool {
+	db := dbHandler.Connect()
+	defer db.Close()
+
+	_, errQuery := db.Exec("INSERT INTO goods "+
+		"(name, price, description, stock, image, seller_id) values (?,?,?,?,?,?)",
+		Goods.Name,
+		Goods.Price,
+		Goods.Description,
+		Goods.Stock,
+		Goods.Image,
+		Goods.SellerID,
+	)
+
+	if errQuery == nil {
+		return true
+	} else {
+		return false
+	}
+}
