@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2022 at 01:41 PM
+-- Generation Time: May 04, 2022 at 07:33 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 8.0.13
 
@@ -46,6 +46,17 @@ INSERT INTO `admin` (`user_id`) VALUES
 
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cartline`
+--
+
+CREATE TABLE `cartline` (
+  `id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `goods_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -67,7 +78,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`user_id`, `cust_address`, `balance`) VALUES
-(3, 'Jl. Gempol Asri', 500);
+(3, 'Jl. Gempol Asri', 500),
+(5, 'Jl Kairo 24', 0);
 
 -- --------------------------------------------------------
 
@@ -151,7 +163,9 @@ CREATE TABLE `seller` (
 --
 
 INSERT INTO `seller` (`user_id`, `seller_address`) VALUES
-(2, 'Jl. deket RS, Bandung');
+(2, 'Jl. deket RS, Bandung'),
+(6, 'Jl Arkham 333'),
+(7, 'Jl New York 53');
 
 -- --------------------------------------------------------
 
@@ -185,7 +199,9 @@ CREATE TABLE `ticket` (
 --
 
 INSERT INTO `ticket` (`id`, `category`, `inquiry`, `reply`, `user_id`) VALUES
-(1, 'Shipment', 'Kenapa barang belum sampai hingga 3 tahun lebih?', '', 3);
+(1, 'Shipment', 'Kenapa barang belum sampai hingga 3 tahun lebih?', 'Coba hubungi ulang.', 3),
+(2, 'Shipment', 'Kenapa belum sampai sudah 3 bulan?', '', 3),
+(3, 'Shipment', 'Kenapa belum sampai sudah 6 bulan?', '', 3);
 
 -- --------------------------------------------------------
 
@@ -199,17 +215,22 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone` int(15) NOT NULL,
-  `type_person` varchar(255) NOT NULL
+  `image_path` varchar(255) NOT NULL,
+  `type_person` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `type_person`) VALUES
-(1, 'Levin Martina', 'levinnivel@gmail.com', 'levinnivel', 87821429, 'admin'),
-(2, 'Andre Viridian', 'komurasaki@gmail.com', 'komurasaki', 89765345, 'seller'),
-(3, 'Aristo Kratos', 'deimoskratos@gmail.com', 'sideimoslah', 81567987, 'customer');
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `phone`, `image_path`, `type_person`, `status`) VALUES
+(1, 'Levin Martina', 'levinnivel@gmail.com', 'levinnivel', 87821429, '', 'admin', 'active'),
+(2, 'Andre Viridian', 'komurasaki@gmail.com', 'komurasaki', 89765345, '', 'seller', 'active'),
+(3, 'Aristo Kratos', 'deimoskratos@gmail.com', 'sideimoslah', 81567987, '', 'customer', 'active'),
+(5, 'Marc Spectator', 'marc@gmail.com', 'moonknight', 2147483647, '', 'customer', 'active'),
+(6, 'Bruce Banner', 'bruce112@gmail.com', 'batman', 2147483647, '', 'seller', 'active'),
+(7, 'Tony Stark', 'stark@gmail.com', 'ironman', 1231351661, '', 'seller', 'active');
 
 --
 -- Indexes for dumped tables
@@ -226,7 +247,15 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_goods_cart` (`goods_id`);
+  ADD KEY `user_id` (`customer_id`);
+
+--
+-- Indexes for table `cartline`
+--
+ALTER TABLE `cartline`
+  ADD PRIMARY KEY (`id`,`goods_id`),
+  ADD KEY `fk_goods_cart` (`goods_id`),
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `customer`
@@ -294,9 +323,9 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `cart`
+-- AUTO_INCREMENT for table `cartline`
 --
-ALTER TABLE `cart`
+ALTER TABLE `cartline`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -333,13 +362,13 @@ ALTER TABLE `shipment`
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -355,7 +384,14 @@ ALTER TABLE `admin`
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `fk_goods_cart` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`id`);
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`user_id`);
+
+--
+-- Constraints for table `cartline`
+--
+ALTER TABLE `cartline`
+  ADD CONSTRAINT `cartline_ibfk_1` FOREIGN KEY (`id`) REFERENCES `cart` (`id`),
+  ADD CONSTRAINT `cartline_ibfk_2` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`id`);
 
 --
 -- Constraints for table `customer`
