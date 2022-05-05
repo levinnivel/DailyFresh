@@ -4,15 +4,3 @@ package controller
 // "log"
 
 // model "DailyFresh-Backend/model"
-
-func addGoods() {
-
-}
-
-func removeGoods() {
-
-}
-
-func checkout() {
-
-}
