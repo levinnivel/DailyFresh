@@ -15,10 +15,12 @@ func Routes(router *gin.Engine) {
 	router.GET("/ticket", Service.GetTickets)
 	router.POST("/ticket", Service.PostTicket)
 
+	router.GET("/customer/:customer_id", Service.GetCustomers)
 	router.GET("/customer", Service.GetCustomers)
 	router.POST("/customer", Service.RegisterCustomer)
 	router.PUT("/customer", Service.UpdateCustomer)
 
+	router.GET("/seller/:seller_id", Service.GetSellers)
 	router.GET("/seller", Service.GetSellers)
 	router.POST("/seller", Service.RegisterSeller)
 	router.PUT("/seller", Service.UpdateSeller)

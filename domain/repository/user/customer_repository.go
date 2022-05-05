@@ -8,16 +8,16 @@ import (
 )
 
 // GetCustomers...
-func GetCustomers(name string) []Model.Customer {
+func GetCustomers(id string) []Model.Customer {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT user.id, user.name, user.email, user.phone, customer.cust_address, customer.balance " +
+	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path, user.type_person, user.status, customer.cust_address, customer.balance " +
 		"FROM user JOIN customer ON user.id = customer.user_id " +
 		"WHERE type_person='customer'"
 
-	if name != "" {
-		query += " AND name='" + name + "'"
+	if id != "" {
+		query += " AND id='" + id + "'"
 	}
 
 	rows, err := db.Query(query)
@@ -30,7 +30,8 @@ func GetCustomers(name string) []Model.Customer {
 
 	for rows.Next() {
 		if err := rows.Scan(&customer.User.ID, &customer.User.Name, &customer.User.Email,
-			&customer.User.Phone, &customer.CustomerAddress, &customer.Balance); err != nil {
+			&customer.User.Password, &customer.User.Phone, &customer.User.ImagePath,
+			&customer.User.TypePerson, &customer.User.Status, &customer.CustomerAddress, &customer.Balance); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			customers = append(customers, customer)
@@ -78,45 +79,16 @@ func RegisterCustomer(Customer Model.Customer) bool {
 }
 
 // Update Customer
-func UpdateCustomer(name, email, password, phone, custAddress string, id int) bool {
+func UpdateCustomer(Customer Model.Customer) bool {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	// rows, _ := db.Query("SELECT * FROM user WHERE id='" + string(id) + "'")
-
-	// var user Model.User
-	// for rows.Next() {
-	// 	if err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Phone); err != nil {
-	// 		log.Fatal(err.Error())
-	// 	}
-	// }
-
-	var user Model.User
-	user = GetUser(string(id))
-
-	// Jika kosong dimasukkan nilai lama
-	if name == "" {
-		name = user.Name
-	}
-
-	if email == "" {
-		email = user.Email
-	}
-
-	if password == "" {
-		password = user.Password
-	}
-
-	if phone == "" {
-		phone = user.Phone
-	}
-
 	_, errQuery := db.Exec("UPDATE user SET name = ?, email = ?, password = ?, phone = ? WHERE id=?",
-		name,
-		email,
-		password,
-		phone,
-		id,
+		Customer.User.Name,
+		Customer.User.Email,
+		Customer.User.Password,
+		Customer.User.Phone,
+		Customer.User.ID,
 	)
 
 	if errQuery != nil {
@@ -125,8 +97,8 @@ func UpdateCustomer(name, email, password, phone, custAddress string, id int) bo
 	}
 
 	_, errQuery2 := db.Exec("UPDATE customer SET cust_address = ? WHERE user_id=?",
-		custAddress,
-		id,
+		Customer.CustomerAddress,
+		Customer.User.ID,
 	)
 
 	if errQuery2 == nil {

@@ -13,14 +13,14 @@ import (
 )
 
 func GetCustomers(c *gin.Context) {
-	name := c.Query("name")
-	customer := Repo.GetCustomers(name)
+	id := c.Param("customer_id")
+	customers := Repo.GetCustomers(id)
 
 	var responses Response.Response
-	if customer != nil {
+	if customers != nil {
 		responses.Message = "Get Customers success"
 		responses.Status = 200
-		responses.Data = customer
+		responses.Data = customers
 	} else {
 		responses.Message = "Get Customers failed"
 		responses.Status = 400
@@ -74,9 +74,31 @@ func UpdateCustomer(c *gin.Context) {
 	password := c.PostForm("password")
 	phone := c.PostForm("phone")
 	custAddress := c.PostForm("cust_address")
-	id, _ := strconv.Atoi(c.Query("user_id"))
+	id := c.PostForm("user_id")
 
-	SuccessPost := Repo.UpdateCustomer(name, email, password, phone, custAddress, id)
+	Customer := Repo.GetCustomers(id)[0]
+
+	if name != "" {
+		Customer.User.Name = name
+	}
+
+	if email != "" {
+		Customer.User.Email = email
+	}
+
+	if password != "" {
+		Customer.User.Password = password
+	}
+
+	if phone != "" {
+		Customer.User.Phone = phone
+	}
+
+	if custAddress != "" {
+		Customer.CustomerAddress = custAddress
+	}
+
+	SuccessPost := Repo.UpdateCustomer(Customer)
 
 	var responses Response.Response
 	if SuccessPost {

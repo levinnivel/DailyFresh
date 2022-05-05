@@ -2,7 +2,6 @@ package service
 
 import (
 	"net/http"
-	"strconv"
 
 	Model "DailyFresh-Backend/domain/model/user"
 	Repo "DailyFresh-Backend/domain/repository/user"
@@ -13,14 +12,14 @@ import (
 )
 
 func GetSellers(c *gin.Context) {
-	name := c.Query("name")
-	seller := Repo.GetSellers(name)
+	id := c.Param("seller_id")
+	sellers := Repo.GetSellers(id)
 
 	var responses Response.Response
-	if seller != nil {
+	if sellers != nil {
 		responses.Message = "Get Sellers success"
 		responses.Status = 200
-		responses.Data = seller
+		responses.Data = sellers
 	} else {
 		responses.Message = "Get Sellers failed"
 		responses.Status = 400
@@ -72,9 +71,31 @@ func UpdateSeller(c *gin.Context) {
 	password := c.PostForm("password")
 	phone := c.PostForm("phone")
 	sellAddress := c.PostForm("seller_address")
-	id, _ := strconv.Atoi(c.Query("user_id"))
+	id := c.PostForm("user_id")
 
-	SuccessPost := Repo.UpdateSeller(name, email, password, phone, sellAddress, id)
+	Seller := Repo.GetSellers(id)[0]
+
+	if name != "" {
+		Seller.User.Name = name
+	}
+
+	if email != "" {
+		Seller.User.Email = email
+	}
+
+	if password != "" {
+		Seller.User.Password = password
+	}
+
+	if phone != "" {
+		Seller.User.Phone = phone
+	}
+
+	if sellAddress != "" {
+		Seller.SellerAddress = sellAddress
+	}
+
+	SuccessPost := Repo.UpdateSeller(Seller)
 
 	var responses Response.Response
 	if SuccessPost {
