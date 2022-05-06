@@ -35,6 +35,7 @@ func RegisterSeller(c *gin.Context) {
 	phone := c.PostForm("phone")
 	typePerson := "seller"
 	status := "active"
+	shopName := c.PostForm("shop_name")
 	sellAddress := c.PostForm("seller_address")
 
 	var User Model.User
@@ -48,6 +49,7 @@ func RegisterSeller(c *gin.Context) {
 	User.Status = status
 
 	Seller.User = User
+	Seller.ShopName = shopName
 	Seller.SellerAddress = sellAddress
 
 	SuccessPost := Repo.RegisterSeller(Seller)
@@ -70,6 +72,7 @@ func UpdateSeller(c *gin.Context) {
 	email := c.PostForm("email")
 	password := c.PostForm("password")
 	phone := c.PostForm("phone")
+	shopName := c.PostForm("shop_name")
 	sellAddress := c.PostForm("seller_address")
 	id := c.PostForm("user_id")
 
@@ -89,6 +92,10 @@ func UpdateSeller(c *gin.Context) {
 
 	if phone != "" {
 		Seller.User.Phone = phone
+	}
+
+	if shopName != "" {
+		Seller.ShopName = shopName
 	}
 
 	if sellAddress != "" {

@@ -14,7 +14,7 @@ func GetSellers(id string) []Model.Seller {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path, user.type_person, user.status, seller.seller_address " +
+	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path, user.type_person, user.status, seller.shop_name, seller.seller_address " +
 		"FROM user JOIN seller ON user.id = seller.user_id " +
 		"WHERE type_person='seller'"
 
@@ -32,8 +32,8 @@ func GetSellers(id string) []Model.Seller {
 
 	for rows.Next() {
 		if err := rows.Scan(&seller.User.ID, &seller.User.Name, &seller.User.Email,
-			&seller.User.Password, &seller.User.Phone, &seller.User.ImagePath,
-			&seller.User.TypePerson, &seller.User.Status, &seller.SellerAddress); err != nil {
+			&seller.User.Password, &seller.User.Phone, &seller.User.ImagePath, &seller.User.TypePerson,
+			&seller.User.Status, &seller.ShopName, &seller.SellerAddress); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			sellers = append(sellers, seller)
@@ -61,8 +61,9 @@ func RegisterSeller(Seller Model.Seller) bool {
 	Seller.UserID, err = stmt.LastInsertId()
 
 	if err == nil {
-		_, errQuery2 := db.Exec("INSERT INTO seller (user_id, seller_address) values (?,?)",
+		_, errQuery2 := db.Exec("INSERT INTO seller (user_id, shop_name, seller_address) values (?,?,?)",
 			Seller.UserID,
+			Seller.ShopName,
 			Seller.SellerAddress,
 		)
 
