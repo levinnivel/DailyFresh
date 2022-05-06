@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2022 at 07:33 PM
+-- Generation Time: May 06, 2022 at 07:36 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 8.0.13
 
@@ -49,6 +49,13 @@ CREATE TABLE `cart` (
   `customer_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `customer_id`) VALUES
+(1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -60,6 +67,13 @@ CREATE TABLE `cartline` (
   `quantity` int(11) NOT NULL,
   `goods_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cartline`
+--
+
+INSERT INTO `cartline` (`id`, `quantity`, `goods_id`) VALUES
+(1, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -103,7 +117,8 @@ CREATE TABLE `goods` (
 
 INSERT INTO `goods` (`id`, `name`, `price`, `description`, `stock`, `image`, `seller_id`) VALUES
 (1, 'Wortel 800 gr', 8000, 'Wortel segar', 10, 'wortel-800-gr.png', 2),
-(2, 'Kol Merah Pertiwi 500gr', 9000, 'Kol merah segar merek Pertiwi', 100, 'kol_merah_pertiwi.png', 2);
+(2, 'Kol Merah Pertiwi 500gr', 9000, 'Kol merah segar merek Pertiwi', 100, 'kol_merah_pertiwi.png', 2),
+(3, 'Wagyu A5 100gr', 150000, 'Dagin Wagyu A5 produksi Jepang', 50, 'wagyu_a5_stark.jpg', 7);
 
 -- --------------------------------------------------------
 
@@ -119,6 +134,15 @@ CREATE TABLE `orderline` (
   `sell_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `orderline`
+--
+
+INSERT INTO `orderline` (`id`, `goods_id`, `order_id`, `quantity`, `sell_price`) VALUES
+(1, 2, 1, 10, 90000),
+(2, 1, 2, 10, 80000),
+(3, 2, 2, 50, 450000);
+
 -- --------------------------------------------------------
 
 --
@@ -129,10 +153,18 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `rating` int(11) NOT NULL,
   `date` date NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `status` int(11) NOT NULL,
   `total_price` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `rating`, `date`, `status`, `total_price`, `customer_id`) VALUES
+(1, 5, '2022-05-06', 1, 90000, 3),
+(2, 5, '2022-05-06', 1, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -147,6 +179,14 @@ CREATE TABLE `payment` (
   `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `payment`
+--
+
+INSERT INTO `payment` (`id`, `amount`, `method`, `order_id`) VALUES
+(1, 90000, 'OVO', 1),
+(2, 530000, 'BCA', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -155,6 +195,7 @@ CREATE TABLE `payment` (
 
 CREATE TABLE `seller` (
   `user_id` int(11) NOT NULL,
+  `shop_name` varchar(255) NOT NULL,
   `seller_address` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -162,10 +203,10 @@ CREATE TABLE `seller` (
 -- Dumping data for table `seller`
 --
 
-INSERT INTO `seller` (`user_id`, `seller_address`) VALUES
-(2, 'Jl. deket RS, Bandung'),
-(6, 'Jl Arkham 333'),
-(7, 'Jl New York 53');
+INSERT INTO `seller` (`user_id`, `shop_name`, `seller_address`) VALUES
+(2, 'Virdimart', 'Jl. deket RS, Bandung'),
+(6, 'Wayne Foods', 'Jl Arkham 333'),
+(7, 'Stark Butchery', 'Jl New York 53');
 
 -- --------------------------------------------------------
 
@@ -179,6 +220,14 @@ CREATE TABLE `shipment` (
   `ship_date` date NOT NULL,
   `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `shipment`
+--
+
+INSERT INTO `shipment` (`id`, `arrival_date`, `ship_date`, `order_id`) VALUES
+(1, '0000-00-00', '0000-00-00', 1),
+(2, '0000-00-00', '0000-00-00', 2);
 
 -- --------------------------------------------------------
 
@@ -247,7 +296,7 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`customer_id`);
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `cartline`
@@ -323,40 +372,46 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `cartline`
 --
 ALTER TABLE `cartline`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orderline`
 --
 ALTER TABLE `orderline`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `shipment`
 --
 ALTER TABLE `shipment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `ticket`
