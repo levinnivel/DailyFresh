@@ -26,7 +26,7 @@ func GetOrder(id string) []Model.Order {
 	var orders []Model.Order
 	for rows.Next() {
 		if err := rows.Scan(&order.ID, &order.Rating, &order.Date,
-			&order.Status, &order.Total_price, &order.CustomerID); err != nil {
+			&order.Status, &order.TotalPrice, &order.CustomerID); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			orders = append(orders, order)
@@ -45,7 +45,7 @@ func PostOrders(Order Model.Order) bool {
 		Order.Rating,
 		Order.Date,
 		Order.Status,
-		Order.Total_price,
+		Order.TotalPrice,
 		Order.CustomerID,
 	)
 
