@@ -50,7 +50,7 @@ func PostOrders(c *gin.Context) {
 	Order.Rating = Rating
 	Order.Date = Date.String()
 	Order.Status = Status
-	Order.Total_price = TotalPrice
+	Order.TotalPrice = TotalPrice
 	Order.CustomerID = CustID
 
 	SuccessPost := Repo.PostOrders(Order)
@@ -136,7 +136,7 @@ func PostOrders(c *gin.Context) {
 
 	_, errQuery3 := db.Exec("INSERT INTO shipment(order_id, ship_date) values (?,?)",
 		order.ID,
-		order.Date,
+		Order.Date,
 	)
 
 	var responses Response.Response
