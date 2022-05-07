@@ -42,15 +42,53 @@ func PostOrders(c *gin.Context) {
 
 	Rating, _ := strconv.Atoi(c.PostForm("rating"))
 	Date := time.Now()
-	Status, _ := strconv.Atoi("1")
-	TotalPrice, _ := strconv.Atoi(c.PostForm("total_price"))
+	Status, _ := strconv.Atoi("0") // 0 itu barang belum sampai, 1 itu kalau barang sudah sampai
 	CustID, _ := strconv.Atoi(c.PostForm("customer_id"))
+
+	Goods := c.PostForm("goods_id")
+	Quantity := c.PostForm("quantity")
+	Method := c.PostForm("method")
+	GoodsArr := strings.Split(Goods, ",")
+	QuantityArr := strings.Split(Quantity, ",")
+
+	var TotalHarga int
+	TotalPembayaran := 0
+
+	for i := 0; i < len(GoodsArr); i++ {
+		//Get harga dari DB
+		query := "SELECT price FROM goods WHERE id=" + GoodsArr[i] + ";"
+		rows, err := db.Query(query)
+		if err != nil {
+			log.Println(err)
+		}
+		var goods ModelGoods.Goods
+		for rows.Next() {
+			if err := rows.Scan(&goods.Price); err != nil {
+				log.Fatal(err.Error())
+			}
+		}
+
+		fmt.Println("Select Goods Price Berhasil")
+
+		//Perhitungan Total Harga Untuk Insert ke Orders
+		TempQuantity, _ := strconv.Atoi(QuantityArr[i])
+		TotalHarga = goods.Price * int(TempQuantity)
+		TotalPembayaran += TotalHarga
+		fmt.Println(".")
+		fmt.Println("TotalHarga:", TotalHarga)
+		fmt.Println("goods.Price:", goods.Price)
+		fmt.Println("TempQuantity:", TempQuantity)
+		fmt.Println("TotalPembayaran:", TotalPembayaran)
+		fmt.Println(".")
+		fmt.Println("GoodsArr[i]:", GoodsArr[i])
+		fmt.Println("QuantityArr[i]:", QuantityArr[i])
+	}
 
 	var Order Model.Order
 	Order.Rating = Rating
 	Order.Date = Date.String()
 	Order.Status = Status
-	Order.TotalPrice = TotalPrice
+	Order.TotalPrice = TotalPembayaran
 	Order.CustomerID = CustID
 
 	SuccessPost := Repo.PostOrders(Order)
@@ -58,7 +96,7 @@ func PostOrders(c *gin.Context) {
 	fmt.Println("Insert Order Berhasil")
 
 	// Get ID order dari DB
-	query := "SELECT id FROM orders WHERE customer_id='" + strconv.Itoa(CustID) + "' AND status='1';"
+	query := "SELECT id FROM orders WHERE customer_id='" + strconv.Itoa(CustID) + "' AND status='0' AND total_price=" + strconv.Itoa(TotalPembayaran) + ";"
 	rows, err := db.Query(query)
 	if err != nil {
 		log.Println(err)
@@ -74,14 +112,8 @@ func PostOrders(c *gin.Context) {
 	fmt.Println("order.ID:", order.ID)
 	fmt.Println("order.CustomerID:", order.CustomerID)
 
-	Goods := c.PostForm("goods_id")
-	Quantity := c.PostForm("quantity")
-	Method := c.PostForm("method")
-	GoodsArr := strings.Split(Goods, ",")
-	QuantityArr := strings.Split(Quantity, ",")
-
-	var TotalHarga int
-	TotalPembayaran := 0
+	var TotalHargaInsert int
+	TotalPembayaranInsert := 0
 
 	//Tambah Insert Total Harga
 	for i := 0; i < len(GoodsArr); i++ {
@@ -100,15 +132,15 @@ func PostOrders(c *gin.Context) {
 
 		fmt.Println("Select Goods Price Berhasil")
 
-		//Perhitungan Total Harga
+		//Perhitungan Total Harga Untuk Insert ke OrderLine
 		TempQuantity, _ := strconv.Atoi(QuantityArr[i])
-		TotalHarga = goods.Price * int(TempQuantity)
-		TotalPembayaran += TotalHarga
+		TotalHargaInsert = goods.Price * int(TempQuantity)
+		TotalPembayaranInsert += TotalHargaInsert
 		fmt.Println(".")
-		fmt.Println("TotalHarga:", TotalHarga)
+		fmt.Println("TotalHarga:", TotalHargaInsert)
 		fmt.Println("goods.Price:", goods.Price)
 		fmt.Println("TempQuantity:", TempQuantity)
-		fmt.Println("TotalPembayaran:", TotalPembayaran)
+		fmt.Println("TotalPembayaran:", TotalPembayaranInsert)
 		fmt.Println(".")
 		fmt.Println("GoodsArr[i]:", GoodsArr[i])
 		fmt.Println("order.ID:", order.ID)
@@ -119,7 +151,7 @@ func PostOrders(c *gin.Context) {
 			GoodsArr[i],
 			order.ID,
 			QuantityArr[i],
-			TotalHarga,
+			TotalHargaInsert,
 		)
 
 		if errQuery == nil {
@@ -131,7 +163,7 @@ func PostOrders(c *gin.Context) {
 	_, errQuery2 := db.Exec("INSERT INTO payment(order_id, method, amount) values (?,?,?)",
 		order.ID,
 		Method,
-		TotalPembayaran,
+		TotalPembayaranInsert,
 	)
 
 	_, errQuery3 := db.Exec("INSERT INTO shipment(order_id, ship_date) values (?,?)",
