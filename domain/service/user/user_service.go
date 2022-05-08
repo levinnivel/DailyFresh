@@ -17,25 +17,42 @@ func Login(c *gin.Context) {
 
 	login := Repo.Login(email, password)
 
-	generate_status := Auth.GenerateToken(c, login.ID, login.Name, login.Email)
-
 	var responses Response.Response
 
-	if generate_status {
-		responses.Message = "Login Success"
-		responses.Status = 200
+	if login.ID != 0 {
+		SuccessLogin := Auth.GenerateToken(c, login.ID, login.Name, login.Email)
+		if SuccessLogin {
+			responses.Message = "Login Success"
+			responses.Status = 200
+		} else {
+			responses.Message = "Login Error"
+			responses.Status = 400
+		}
 	} else {
-		responses.Message = "Login Error"
-		responses.Status = 400
+		responses.Message = "Login Invalid"
+		responses.Status = 401
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
 }
 
 func Logout(c *gin.Context) {
-	Auth.ResetUserToken(c)
+	SuccessLogout := false
+	SuccessLogout = Auth.ResetUserToken(c)
 
 	var responses Response.Response
-	responses.Message = "Logout Success"
-	responses.Status = 200
+
+	if SuccessLogout {
+		responses.Message = "Logout Success"
+		responses.Status = 200
+	} else {
+		responses.Message = "Logout Error"
+		responses.Status = 400
+	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
 }
 
 func GetUsers(c *gin.Context) {

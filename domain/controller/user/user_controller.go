@@ -7,6 +7,9 @@ import (
 )
 
 func Routes(router *gin.Engine) {
+	router.GET("/login", Service.Login)
+	router.GET("/logout", Service.Logout)
+
 	router.GET("/user/:user_id", Service.GetUsers)
 	router.GET("/user", Service.GetUsers)
 	router.DELETE("/user/:user_id", Service.DeleteUser)
