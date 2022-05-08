@@ -14,7 +14,7 @@ func Login(email string, password string) Model.User {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT * FROM user where email='" + email + "'"
+	query := "SELECT * FROM user where email='" + email + "'AND password='" + password + "'"
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -26,14 +26,12 @@ func Login(email string, password string) Model.User {
 		if err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Phone, &user.ImagePath,
 			&user.TypePerson, &user.Status); err != nil {
 			log.Fatal(err.Error())
+		} else {
+			return user
 		}
 	}
 
-	if user.Password == password {
-		return user
-	} else {
-		return Model.User{}
-	}
+	return Model.User{}
 }
 
 // GetUser...

@@ -1,7 +1,11 @@
 package authentication
 
 import (
+	"fmt"
+	"net/http"
 	"time"
+
+	Response "DailyFresh-Backend/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -39,41 +43,50 @@ func GenerateToken(c *gin.Context, id int64, name string, email string) bool {
 	return true
 }
 
-func ResetUserToken(c *gin.Context) {
-	c.SetCookie(tokenName, "", -1, "/", "localhost", false, true)
+func ResetUserToken(c *gin.Context) bool {
+	_, err := c.Cookie(tokenName)
+
+	if err != nil {
+		return false
+	} else {
+		c.SetCookie(tokenName, "", -1, "/", "localhost", false, true)
+		return true
+	}
 }
 
-// func Authenticate(accessType int) gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		isValidToken := validateUserToken(c, accessType)
-// 		if !isValidToken {
-// 			var response model.UserResponse
-// 			response.Message = "Unauthorized Access"
-// 			fmt.Println("Unauthorized Access")
-// 			// sendUnAuthorizedResponse(c, response)
-// 			c.Abort()
-// 			return
-// 		} else {
-// 			c.Next()
-// 		}
-// 	}
-// }
+func Authenticate(accessType int) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		isValidToken := ValidateUserToken(c, accessType)
+		if !isValidToken {
+			var responses Response.Response
+			responses.Message = "Unauthorized Access"
+			responses.Status = 401
+			fmt.Println("Unauthorized Access")
+			c.Header("Content-Type", "application/json")
+			c.JSON(http.StatusOK, responses)
+			c.Abort()
+			return
+		} else {
+			c.Next()
+		}
+	}
+}
 
-// func validateUserToken(c *gin.Context, accessType int) bool {
-// 	isAccessTokenValid, id, name, email := validateTokenFromCookies(c)
-// 	fmt.Print(id, email, userType, accessType, isAccessTokenValid)
+func ValidateUserToken(c *gin.Context, accessType int) bool {
+	isAccessTokenValid, id, name, email := ValidateTokenFromCookies(c)
+	fmt.Print(id, email, accessType, isAccessTokenValid)
 
-// 	if isAccessTokenValid {
-// 		isUserValid := name == accessType
-// 		fmt.Print(isUserValid)
-// 		if isUserValid {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
+	if isAccessTokenValid {
+		isUserValid := name == accessType
+		fmt.Print(isUserValid)
+		if isUserValid {
+			return true
+		}
+	}
+	return false
+}
 
-func validateTokenFromCookies(c *gin.Context) (bool, int64, string, string) {
+func ValidateTokenFromCookies(c *gin.Context) (bool, int64, string, string) {
 	if cookie, err := c.Cookie(tokenName); err == nil {
 		accessToken := cookie
 		accessClaims := &Claims{}
