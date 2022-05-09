@@ -14,6 +14,9 @@ func Routes(router *gin.Engine) {
 	router.GET("/user", Service.GetUsers)
 	router.DELETE("/user/:user_id", Service.DeleteUser)
 
+	router.PUT("/admin/ban", Service.BanAccount)
+	router.PUT("/admin/reply", Service.ReplyTicket)
+
 	router.GET("/ticket/:ticket_id", Service.GetTickets)
 	router.GET("/ticket", Service.GetTickets)
 	router.POST("/ticket", Service.PostTicket)
