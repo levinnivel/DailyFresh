@@ -55,3 +55,21 @@ func PostTicket(Ticket Model.Ticket) bool {
 		return false
 	}
 }
+
+// Reply Ticket
+func ReplyTicket(id string, reply string) bool {
+	db := dbHandler.Connect()
+	defer db.Close()
+
+	_, errQuery := db.Exec("UPDATE ticket SET reply = ? WHERE id=?",
+		reply,
+		id,
+	)
+
+	if errQuery == nil {
+		return true
+	} else {
+		log.Println(errQuery)
+		return false
+	}
+}

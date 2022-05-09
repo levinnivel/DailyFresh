@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 
+	Auth "DailyFresh-Backend/authentication"
 	Model "DailyFresh-Backend/domain/model/user"
 	Repo "DailyFresh-Backend/domain/repository/user"
 	Response "DailyFresh-Backend/response"
@@ -29,90 +30,98 @@ func GetSellers(c *gin.Context) {
 }
 
 func RegisterSeller(c *gin.Context) {
-	name := c.PostForm("name")
-	email := c.PostForm("email")
-	password := c.PostForm("password")
-	phone := c.PostForm("phone")
-	typePerson := "seller"
-	status := "active"
-	shopName := c.PostForm("shop_name")
-	sellAddress := c.PostForm("seller_address")
+	authStatus := Auth.Authenticate(c, "seller")
 
-	var User Model.User
-	var Seller Model.Seller
+	if authStatus {
+		name := c.PostForm("name")
+		email := c.PostForm("email")
+		password := c.PostForm("password")
+		phone := c.PostForm("phone")
+		typePerson := "seller"
+		status := "active"
+		shopName := c.PostForm("shop_name")
+		sellAddress := c.PostForm("seller_address")
 
-	User.Name = name
-	User.Email = email
-	User.Password = password
-	User.Phone = phone
-	User.TypePerson = typePerson
-	User.Status = status
+		var User Model.User
+		var Seller Model.Seller
 
-	Seller.User = User
-	Seller.ShopName = shopName
-	Seller.SellerAddress = sellAddress
+		User.Name = name
+		User.Email = email
+		User.Password = password
+		User.Phone = phone
+		User.TypePerson = typePerson
+		User.Status = status
 
-	SuccessPost := Repo.RegisterSeller(Seller)
+		Seller.User = User
+		Seller.ShopName = shopName
+		Seller.SellerAddress = sellAddress
 
-	var responses Response.Response
-	if SuccessPost {
-		responses.Message = "Success Post Seller"
-		responses.Status = 200
-	} else {
-		responses.Message = "Failed Post Seller"
-		responses.Status = 400
+		SuccessPost := Repo.RegisterSeller(Seller)
+
+		var responses Response.Response
+		if SuccessPost {
+			responses.Message = "Success Post Seller"
+			responses.Status = 200
+		} else {
+			responses.Message = "Failed Post Seller"
+			responses.Status = 400
+		}
+
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
 	}
-
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, responses)
 }
 
 func UpdateSeller(c *gin.Context) {
-	name := c.PostForm("name")
-	email := c.PostForm("email")
-	password := c.PostForm("password")
-	phone := c.PostForm("phone")
-	shopName := c.PostForm("shop_name")
-	sellAddress := c.PostForm("seller_address")
-	id := c.PostForm("user_id")
+	authStatus := Auth.Authenticate(c, "seller")
 
-	Seller := Repo.GetSellers(id)[0]
+	if authStatus {
+		name := c.PostForm("name")
+		email := c.PostForm("email")
+		password := c.PostForm("password")
+		phone := c.PostForm("phone")
+		shopName := c.PostForm("shop_name")
+		sellAddress := c.PostForm("seller_address")
+		id := c.PostForm("user_id")
 
-	if name != "" {
-		Seller.User.Name = name
+		Seller := Repo.GetSellers(id)[0]
+
+		if name != "" {
+			Seller.User.Name = name
+		}
+
+		if email != "" {
+			Seller.User.Email = email
+		}
+
+		if password != "" {
+			Seller.User.Password = password
+		}
+
+		if phone != "" {
+			Seller.User.Phone = phone
+		}
+
+		if shopName != "" {
+			Seller.ShopName = shopName
+		}
+
+		if sellAddress != "" {
+			Seller.SellerAddress = sellAddress
+		}
+
+		SuccessPost := Repo.UpdateSeller(Seller)
+
+		var responses Response.Response
+		if SuccessPost {
+			responses.Message = "Success Update Seller"
+			responses.Status = 200
+		} else {
+			responses.Message = "Failed Update Seller"
+			responses.Status = 400
+		}
+
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
 	}
-
-	if email != "" {
-		Seller.User.Email = email
-	}
-
-	if password != "" {
-		Seller.User.Password = password
-	}
-
-	if phone != "" {
-		Seller.User.Phone = phone
-	}
-
-	if shopName != "" {
-		Seller.ShopName = shopName
-	}
-
-	if sellAddress != "" {
-		Seller.SellerAddress = sellAddress
-	}
-
-	SuccessPost := Repo.UpdateSeller(Seller)
-
-	var responses Response.Response
-	if SuccessPost {
-		responses.Message = "Success Update Seller"
-		responses.Status = 200
-	} else {
-		responses.Message = "Failed Update Seller"
-		responses.Status = 400
-	}
-
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, responses)
 }

@@ -20,10 +20,11 @@ func Login(c *gin.Context) {
 	var responses Response.Response
 
 	if login.ID != 0 {
-		SuccessLogin := Auth.GenerateToken(c, login.ID, login.Name, login.Email)
+		SuccessLogin := Auth.GenerateToken(c, login.ID, login.Name, login.TypePerson)
 		if SuccessLogin {
 			responses.Message = "Login Success"
 			responses.Status = 200
+			responses.Data = login.TypePerson
 		} else {
 			responses.Message = "Login Error"
 			responses.Status = 400
@@ -56,34 +57,42 @@ func Logout(c *gin.Context) {
 }
 
 func GetUsers(c *gin.Context) {
-	id := c.Param("user_id")
-	user := Repo.GetUsers(id)
+	authStatus := Auth.Authenticate(c, "admin")
 
-	var responses Response.Response
-	if user != nil {
-		responses.Message = "Get Users success"
-		responses.Status = 200
-		responses.Data = user
-	} else {
-		responses.Message = "Get Users failed"
-		responses.Status = 400
+	if authStatus {
+		id := c.Param("user_id")
+		user := Repo.GetUsers(id)
+
+		var responses Response.Response
+		if user != nil {
+			responses.Message = "Get Users success"
+			responses.Status = 200
+			responses.Data = user
+		} else {
+			responses.Message = "Get Users failed"
+			responses.Status = 400
+		}
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
 	}
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, responses)
 }
 
 func DeleteUser(c *gin.Context) {
-	id := c.Param("user_id")
-	delete_status := Repo.DeleteUser(id)
+	authStatus := Auth.Authenticate(c, "admin")
 
-	var responses Response.Response
-	if delete_status == true {
-		responses.Message = "Success Delete User"
-		responses.Status = 200
-	} else {
-		responses.Message = "Failed Delete User"
-		responses.Status = 400
+	if authStatus {
+		id := c.Param("user_id")
+		deleteStatus := Repo.DeleteUser(id)
+
+		var responses Response.Response
+		if deleteStatus == true {
+			responses.Message = "Success Delete User"
+			responses.Status = 200
+		} else {
+			responses.Message = "Failed Delete User"
+			responses.Status = 400
+		}
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
 	}
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, responses)
 }

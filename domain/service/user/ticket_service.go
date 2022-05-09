@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	Auth "DailyFresh-Backend/authentication"
 	Model "DailyFresh-Backend/domain/model/user"
 	Repo "DailyFresh-Backend/domain/repository/user"
 	Response "DailyFresh-Backend/response"
@@ -52,4 +53,27 @@ func PostTicket(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, responses)
 
+}
+
+func ReplyTicket(c *gin.Context) {
+	authStatus := Auth.Authenticate(c, "admin")
+
+	if authStatus {
+		id := c.PostForm("id")
+		reply := c.PostForm("reply")
+
+		SucessUpdate := Repo.ReplyTicket(id, reply)
+
+		var responses Response.Response
+		if SucessUpdate {
+			responses.Message = "Reply Ticket Success"
+			responses.Status = 200
+		} else {
+			responses.Message = "Reply Ticket Failed"
+			responses.Status = 400
+		}
+
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
+	}
 }

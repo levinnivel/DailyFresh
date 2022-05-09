@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 
+	Auth "DailyFresh-Backend/authentication"
 	Repo "DailyFresh-Backend/domain/repository/goods"
 	Response "DailyFresh-Backend/response"
 
@@ -11,19 +12,23 @@ import (
 )
 
 func CreateCart(c *gin.Context) {
-	id := c.Query("customer_id")
+	authStatus := Auth.Authenticate(c, "customer")
 
-	SuccessPost := Repo.CreateCart(id)
+	if authStatus {
+		id := c.PostForm("customer_id")
 
-	var responses Response.Response
-	if SuccessPost {
-		responses.Message = "Success Create Cart"
-		responses.Status = 200
-	} else {
-		responses.Message = "Failed Create Cart"
-		responses.Status = 400
+		SuccessPost := Repo.CreateCart(id)
+
+		var responses Response.Response
+		if SuccessPost {
+			responses.Message = "Success Create Cart"
+			responses.Status = 200
+		} else {
+			responses.Message = "Failed Create Cart"
+			responses.Status = 400
+		}
+
+		c.Header("Content-Type", "application/json")
+		c.JSON(http.StatusOK, responses)
 	}
-
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, responses)
 }
