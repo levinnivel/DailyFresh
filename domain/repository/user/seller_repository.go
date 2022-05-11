@@ -14,7 +14,7 @@ func GetSellers(id string) []Model.Seller {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path " +
+	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path, " +
 		"user.type_person, user.status, seller.shop_name, seller.website_address, seller.seller_address " +
 		"FROM user JOIN seller ON user.id = seller.user_id " +
 		"WHERE type_person='seller'"

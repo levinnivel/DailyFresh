@@ -12,11 +12,8 @@ func ShowCartLine(id string) []Model.CartLine {
 	defer db.Close()
 
 	query := "SELECT cartline.id, cartline.quantity, goods.name, goods.price, goods.description, " +
-		"goods.stock, goods.image, goods.seller_id FROM cartline JOIN goods ON cartline.goods_id = goods.id"
-
-	if id != "" {
-		query += " WHERE cartline.id='" + id + "'"
-	}
+		"goods.stock, goods.image, goods.seller_id FROM cartline JOIN goods ON cartline.goods_id = goods.id " +
+		"WHERE cartline.id='" + id + "'"
 
 	rows, err := db.Query(query)
 	if err != nil {
