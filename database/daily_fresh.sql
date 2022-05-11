@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2022 at 07:36 PM
+-- Generation Time: May 11, 2022 at 04:52 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 8.0.13
 
@@ -196,6 +196,7 @@ INSERT INTO `payment` (`id`, `amount`, `method`, `order_id`) VALUES
 CREATE TABLE `seller` (
   `user_id` int(11) NOT NULL,
   `shop_name` varchar(255) NOT NULL,
+  `website_address` varchar(255) NOT NULL,
   `seller_address` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -203,10 +204,10 @@ CREATE TABLE `seller` (
 -- Dumping data for table `seller`
 --
 
-INSERT INTO `seller` (`user_id`, `shop_name`, `seller_address`) VALUES
-(2, 'Virdimart', 'Jl. deket RS, Bandung'),
-(6, 'Wayne Foods', 'Jl Arkham 333'),
-(7, 'Stark Butchery', 'Jl New York 53');
+INSERT INTO `seller` (`user_id`, `shop_name`, `website_address`, `seller_address`) VALUES
+(2, 'Virdimart', 'Jl. Dipati Ukur Kelurahan No.26, Lebakgede, Kecamatan Coblong, Kota Bandung, Jawa Barat 40132', 'Jl. deket RS, Bandung'),
+(6, 'Wayne Foods', 'Jl. Braga No.64, Braga, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40111', 'Jl Arkham 333'),
+(7, 'Stark Butchery', 'Jl. Mekar Jaya, Mekarwangi, Kec. Bojongloa Kidul, Kota Bandung, Jawa Barat 40287', 'Jl New York 53');
 
 -- --------------------------------------------------------
 
@@ -249,8 +250,10 @@ CREATE TABLE `ticket` (
 
 INSERT INTO `ticket` (`id`, `category`, `inquiry`, `reply`, `user_id`) VALUES
 (1, 'Shipment', 'Kenapa barang belum sampai hingga 3 tahun lebih?', 'Coba hubungi ulang.', 3),
-(2, 'Shipment', 'Kenapa belum sampai sudah 3 bulan?', '', 3),
-(3, 'Shipment', 'Kenapa belum sampai sudah 6 bulan?', '', 3);
+(2, 'Shipment', 'Kenapa belum sampai sudah 3 bulan?', 'Coba refresh ulang.', 3),
+(3, 'Shipment', 'Kenapa belum sampai sudah 6 bulan?', '', 3),
+(4, 'Shipment', 'Kenapa belum sampai sudah 24 bulan?', '', 3),
+(5, 'Shipment', 'Kenapa belum sampai sudah 26 bulan?', '', 3);
 
 -- --------------------------------------------------------
 
@@ -417,7 +420,7 @@ ALTER TABLE `shipment`
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
