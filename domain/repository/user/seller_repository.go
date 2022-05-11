@@ -14,7 +14,8 @@ func GetSellers(id string) []Model.Seller {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path, user.type_person, user.status, seller.shop_name, seller.seller_address " +
+	query := "SELECT user.id, user.name, user.email, user.password, user.phone, user.image_path " +
+		"user.type_person, user.status, seller.shop_name, seller.website_address, seller.seller_address " +
 		"FROM user JOIN seller ON user.id = seller.user_id " +
 		"WHERE type_person='seller'"
 
@@ -33,7 +34,7 @@ func GetSellers(id string) []Model.Seller {
 	for rows.Next() {
 		if err := rows.Scan(&seller.User.ID, &seller.User.Name, &seller.User.Email,
 			&seller.User.Password, &seller.User.Phone, &seller.User.ImagePath, &seller.User.TypePerson,
-			&seller.User.Status, &seller.ShopName, &seller.SellerAddress); err != nil {
+			&seller.User.Status, &seller.ShopName, &seller.WebsiteAddress, &seller.SellerAddress); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			sellers = append(sellers, seller)
@@ -58,12 +59,13 @@ func RegisterSeller(Seller Model.Seller) bool {
 	)
 
 	var err error
-	Seller.UserID, err = stmt.LastInsertId()
+	Seller.User.ID, err = stmt.LastInsertId()
 
 	if err == nil {
-		_, errQuery2 := db.Exec("INSERT INTO seller (user_id, shop_name, seller_address) values (?,?,?)",
-			Seller.UserID,
+		_, errQuery2 := db.Exec("INSERT INTO seller (user_id, shop_name, website_address, seller_address) values (?,?,?,?)",
+			Seller.User.ID,
 			Seller.ShopName,
+			Seller.WebsiteAddress,
 			Seller.SellerAddress,
 		)
 
@@ -98,7 +100,9 @@ func UpdateSeller(Seller Model.Seller) bool {
 		return false
 	}
 
-	_, errQuery2 := db.Exec("UPDATE seller SET seller_address = ? WHERE user_id=?",
+	_, errQuery2 := db.Exec("UPDATE seller SET shop_name = ?, website_address = ?, seller_address = ? WHERE user_id=?",
+		Seller.ShopName,
+		Seller.WebsiteAddress,
 		Seller.SellerAddress,
 		Seller.User.ID,
 	)
