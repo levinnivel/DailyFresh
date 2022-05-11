@@ -31,46 +31,42 @@ func GetCustomers(c *gin.Context) {
 }
 
 func RegisterCustomer(c *gin.Context) {
-	authStatus := Auth.Authenticate(c, "customer")
+	name := c.PostForm("name")
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+	phone := c.PostForm("phone")
+	typePerson := "customer"
+	status := "active"
+	custAddress := c.PostForm("cust_address")
+	balance, _ := strconv.Atoi(c.PostForm("balance"))
 
-	if authStatus {
-		name := c.PostForm("name")
-		email := c.PostForm("email")
-		password := c.PostForm("password")
-		phone := c.PostForm("phone")
-		typePerson := "customer"
-		status := "active"
-		custAddress := c.PostForm("cust_address")
-		balance, _ := strconv.Atoi(c.PostForm("balance"))
+	var User Model.User
+	var Customer Model.Customer
 
-		var User Model.User
-		var Customer Model.Customer
+	User.Name = name
+	User.Email = email
+	User.Password = password
+	User.Phone = phone
+	User.TypePerson = typePerson
+	User.Status = status
 
-		User.Name = name
-		User.Email = email
-		User.Password = password
-		User.Phone = phone
-		User.TypePerson = typePerson
-		User.Status = status
+	Customer.User = User
+	Customer.CustomerAddress = custAddress
+	Customer.Balance = balance
 
-		Customer.User = User
-		Customer.CustomerAddress = custAddress
-		Customer.Balance = balance
+	SuccessPost := Repo.RegisterCustomer(Customer)
 
-		SuccessPost := Repo.RegisterCustomer(Customer)
-
-		var responses Response.Response
-		if SuccessPost {
-			responses.Message = "Success Post Customer"
-			responses.Status = 200
-		} else {
-			responses.Message = "Failed Post Customer"
-			responses.Status = 400
-		}
-
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusOK, responses)
+	var responses Response.Response
+	if SuccessPost {
+		responses.Message = "Success Post Customer"
+		responses.Status = 200
+	} else {
+		responses.Message = "Failed Post Customer"
+		responses.Status = 400
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
 }
 
 func UpdateCustomer(c *gin.Context) {
