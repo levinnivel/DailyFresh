@@ -30,46 +30,44 @@ func GetSellers(c *gin.Context) {
 }
 
 func RegisterSeller(c *gin.Context) {
-	authStatus := Auth.Authenticate(c, "seller")
+	name := c.PostForm("name")
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+	phone := c.PostForm("phone")
+	typePerson := "seller"
+	status := "active"
+	shopName := c.PostForm("shop_name")
+	webAddress := c.PostForm("website_address")
+	sellAddress := c.PostForm("seller_address")
 
-	if authStatus {
-		name := c.PostForm("name")
-		email := c.PostForm("email")
-		password := c.PostForm("password")
-		phone := c.PostForm("phone")
-		typePerson := "seller"
-		status := "active"
-		shopName := c.PostForm("shop_name")
-		sellAddress := c.PostForm("seller_address")
+	var User Model.User
+	var Seller Model.Seller
 
-		var User Model.User
-		var Seller Model.Seller
+	User.Name = name
+	User.Email = email
+	User.Password = password
+	User.Phone = phone
+	User.TypePerson = typePerson
+	User.Status = status
 
-		User.Name = name
-		User.Email = email
-		User.Password = password
-		User.Phone = phone
-		User.TypePerson = typePerson
-		User.Status = status
+	Seller.User = User
+	Seller.ShopName = shopName
+	Seller.WebsiteAddress = webAddress
+	Seller.SellerAddress = sellAddress
 
-		Seller.User = User
-		Seller.ShopName = shopName
-		Seller.SellerAddress = sellAddress
+	SuccessPost := Repo.RegisterSeller(Seller)
 
-		SuccessPost := Repo.RegisterSeller(Seller)
-
-		var responses Response.Response
-		if SuccessPost {
-			responses.Message = "Success Post Seller"
-			responses.Status = 200
-		} else {
-			responses.Message = "Failed Post Seller"
-			responses.Status = 400
-		}
-
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusOK, responses)
+	var responses Response.Response
+	if SuccessPost {
+		responses.Message = "Success Post Seller"
+		responses.Status = 200
+	} else {
+		responses.Message = "Failed Post Seller"
+		responses.Status = 400
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
 }
 
 func UpdateSeller(c *gin.Context) {
@@ -81,6 +79,7 @@ func UpdateSeller(c *gin.Context) {
 		password := c.PostForm("password")
 		phone := c.PostForm("phone")
 		shopName := c.PostForm("shop_name")
+		webAddress := c.PostForm("website_address")
 		sellAddress := c.PostForm("seller_address")
 		id := c.PostForm("user_id")
 
@@ -104,6 +103,10 @@ func UpdateSeller(c *gin.Context) {
 
 		if shopName != "" {
 			Seller.ShopName = shopName
+		}
+
+		if webAddress != "" {
+			Seller.WebsiteAddress = webAddress
 		}
 
 		if sellAddress != "" {

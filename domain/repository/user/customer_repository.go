@@ -56,11 +56,11 @@ func RegisterCustomer(Customer Model.Customer) bool {
 	)
 
 	var err error
-	Customer.UserID, err = stmt.LastInsertId()
+	Customer.User.ID, err = stmt.LastInsertId()
 
 	if err == nil {
 		_, errQuery2 := db.Exec("INSERT INTO customer (user_id, cust_address, balance) values (?,?,?)",
-			Customer.UserID,
+			Customer.User.ID,
 			Customer.CustomerAddress,
 			Customer.Balance,
 		)
