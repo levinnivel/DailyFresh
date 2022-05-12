@@ -54,6 +54,7 @@ func PostGoods(c *gin.Context) {
 		name := c.PostForm("name")
 		price, _ := strconv.Atoi(c.PostForm("price"))
 		description := c.PostForm("description")
+		category := c.PostForm("category")
 		stock, _ := strconv.Atoi(c.PostForm("stock"))
 		image := c.PostForm("image")
 		seller_id, _ := strconv.Atoi(c.Query("seller_id"))
@@ -62,6 +63,7 @@ func PostGoods(c *gin.Context) {
 		Goods.Name = name
 		Goods.Price = price
 		Goods.Description = description
+		Goods.Category = category
 		Goods.Stock = stock
 		Goods.Image = image
 		Goods.SellerID = seller_id

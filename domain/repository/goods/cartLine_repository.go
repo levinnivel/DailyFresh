@@ -11,7 +11,7 @@ func ShowCartLine(id string) []Model.CartLine {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	query := "SELECT cartline.id, cartline.quantity, goods.name, goods.price, goods.description, " +
+	query := "SELECT cartline.id, cartline.quantity, goods.name, goods.price, goods.description, goods.category" +
 		"goods.stock, goods.image, goods.seller_id FROM cartline JOIN goods ON cartline.goods_id = goods.id " +
 		"WHERE cartline.id='" + id + "'"
 
@@ -23,8 +23,8 @@ func ShowCartLine(id string) []Model.CartLine {
 	var cartLine Model.CartLine
 	var cartLines []Model.CartLine
 	for rows.Next() {
-		if err := rows.Scan(&cartLine.ID, &cartLine.Quantity, &cartLine.Goods.Name, &cartLine.Goods.Price,
-			&cartLine.Goods.Description, &cartLine.Goods.Stock, &cartLine.Goods.Image, &cartLine.Goods.SellerID); err != nil {
+		if err := rows.Scan(&cartLine.ID, &cartLine.Quantity, &cartLine.Goods.Name, &cartLine.Goods.Price, &cartLine.Goods.Description,
+			&cartLine.Goods.Category, &cartLine.Goods.Stock, &cartLine.Goods.Image, &cartLine.Goods.SellerID); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			cartLines = append(cartLines, cartLine)
