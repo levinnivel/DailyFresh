@@ -7,7 +7,7 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-	router.GET("/login", Service.Login)
+	router.POST("/login", Service.Login)
 	router.GET("/logout", Service.Logout)
 
 	router.GET("/user/:user_id", Service.GetUsers)
