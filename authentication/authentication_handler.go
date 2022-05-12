@@ -22,7 +22,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(c *gin.Context, id int64, name string, typePerson string) bool {
+func GenerateToken(c *gin.Context, id int64, name string, typePerson string) (bool, string) {
 	tokenExpiryTime := time.Now().Add(60 * time.Minute)
 
 	claims := &Claims{
@@ -36,11 +36,11 @@ func GenerateToken(c *gin.Context, id int64, name string, typePerson string) boo
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(jwtKey)
 	if err != nil {
-		return false
+		return false, ""
 	}
 
 	c.SetCookie(tokenName, signedToken, 3600, "/", "localhost", false, true)
-	return true
+	return true, signedToken
 }
 
 func PrintCookie(c *gin.Context) {
