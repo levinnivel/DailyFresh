@@ -47,6 +47,23 @@ func GetGoodsBySeller(c *gin.Context) {
 	c.JSON(http.StatusOK, responses)
 }
 
+func GetGoodsByCategory(c *gin.Context) {
+	id := c.Query("category")
+	goods := Repo.GetGoodsByCategory(id)
+
+	var responses Response.Response
+	if goods != nil {
+		responses.Message = "Get Goods By Category success"
+		responses.Status = 200
+		responses.Data = goods
+	} else {
+		responses.Message = "Get Goods By Category failed"
+		responses.Status = 400
+	}
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
+}
+
 func PostGoods(c *gin.Context) {
 	authStatus := Auth.Authenticate(c, "seller")
 
@@ -82,4 +99,58 @@ func PostGoods(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
 		c.JSON(http.StatusOK, responses)
 	}
+}
+
+func UpdateGoods(c *gin.Context) {
+	// authStatus := Auth.Authenticate(c, "customer")
+
+	// if authStatus {
+	name := c.PostForm("name")
+	price, _ := strconv.Atoi(c.PostForm("price"))
+	description := c.PostForm("description")
+	category := c.PostForm("category")
+	stock, _ := strconv.Atoi(c.PostForm("stock"))
+	image := c.PostForm("image")
+	id := c.PostForm("id")
+
+	Goods := Repo.GetGoods(id)[0]
+
+	if name != "" {
+		Goods.Name = name
+	}
+
+	if price != 0 {
+		Goods.Price = price
+	}
+
+	if description != "" {
+		Goods.Description = description
+	}
+
+	if category != "" {
+		Goods.Category = category
+	}
+
+	if stock != 0 {
+		Goods.Stock = stock
+	}
+
+	if image != "" {
+		Goods.Image = image
+	}
+
+	SuccessPost := Repo.UpdateGoods(Goods)
+
+	var responses Response.Response
+	if SuccessPost {
+		responses.Message = "Success Update Goods"
+		responses.Status = 200
+	} else {
+		responses.Message = "Failed Update Goods"
+		responses.Status = 400
+	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, responses)
+	// }
 }
