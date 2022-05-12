@@ -2,6 +2,7 @@ package authentication
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -21,7 +22,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(c *gin.Context, id int64, name string, typePerson string) bool {
+func GenerateToken(c *gin.Context, id int64, name string, typePerson string) (bool, string) {
 	tokenExpiryTime := time.Now().Add(60 * time.Minute)
 
 	claims := &Claims{
@@ -35,14 +36,21 @@ func GenerateToken(c *gin.Context, id int64, name string, typePerson string) boo
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(jwtKey)
 	if err != nil {
-		return false
+		return false, ""
 	}
-
-	// c.SetCookie(tokenName, signedToken, tokenExpiryTime, "/", "localhost", false, true)
-	c.SetCookie(tokenName, signedToken, 1000, "/", "localhost", false, true)
-	return true
+	return true, signedToken
 }
+func PrintCookie(c *gin.Context) {
+	cookie, err := c.Cookie(tokenName)
 
+	if err != nil {
+		log.Println("err kosong")
+		log.Println(cookie)
+	} else {
+		log.Println("ada err")
+		log.Print(err)
+	}
+}
 func ResetUserToken(c *gin.Context) bool {
 	_, err := c.Cookie(tokenName)
 
