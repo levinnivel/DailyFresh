@@ -22,7 +22,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(c *gin.Context, id int64, name string, typePerson string) (bool, string) {
+func GenerateToken(c *gin.Context, id int64, name string, typePerson string) bool {
 	tokenExpiryTime := time.Now().Add(60 * time.Minute)
 
 	claims := &Claims{
@@ -36,10 +36,16 @@ func GenerateToken(c *gin.Context, id int64, name string, typePerson string) (bo
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(jwtKey)
 	if err != nil {
-		return false, ""
+		return false
 	}
-	return true, signedToken
+
+	log.Println(signedToken)
+	// c.SetCookie(tokenName, signedToken, tokenExpiryTime, "/", "localhost", false, true)
+	c.SetCookie(tokenName, signedToken, 1000, "/", "localhost", false, false)
+	PrintCookie(c)
+	return true
 }
+
 func PrintCookie(c *gin.Context) {
 	cookie, err := c.Cookie(tokenName)
 
@@ -47,10 +53,11 @@ func PrintCookie(c *gin.Context) {
 		log.Println("err kosong")
 		log.Println(cookie)
 	} else {
-		log.Println("ada err")
+		log.Println("ada")
 		log.Print(err)
 	}
 }
+
 func ResetUserToken(c *gin.Context) bool {
 	_, err := c.Cookie(tokenName)
 
