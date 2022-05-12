@@ -20,11 +20,11 @@ func Login(c *gin.Context) {
 	var responses Response.Response
 
 	if login.ID != 0 {
-		SuccessLogin := Auth.GenerateToken(c, login.ID, login.Name, login.TypePerson)
-		if SuccessLogin {
+		SuccessStatus, token := Auth.GenerateToken(c, login.ID, login.Name, login.TypePerson)
+		if SuccessStatus && token != "" {
 			responses.Message = "Login Success"
 			responses.Status = 200
-			responses.Data = login.TypePerson
+			responses.Data = token
 		} else {
 			responses.Message = "Login Error"
 			responses.Status = 400
