@@ -11,7 +11,7 @@ func BanAccount(id string) bool {
 	db := dbHandler.Connect()
 	defer db.Close()
 
-	_, errQuery := db.Exec("UPDATE  user SET status = 'inactive' WHERE id=?",
+	_, errQuery := db.Exec("UPDATE user SET status = 'inactive' WHERE id=?",
 		id,
 	)
 
