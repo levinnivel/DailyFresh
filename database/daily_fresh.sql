@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2022 at 11:40 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 8.0.13
+-- Generation Time: May 12, 2022 at 04:32 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -118,8 +118,22 @@ CREATE TABLE `goods` (
 
 INSERT INTO `goods` (`id`, `name`, `price`, `description`, `category`, `stock`, `image`, `seller_id`) VALUES
 (1, 'Wortel 800 gr', 8000, 'Wortel segar', 'Veggies', 10, 'wortel-800-gr.png', 2),
-(2, 'Kol Merah Pertiwi 500gr', 9000, 'Kol merah segar merek Pertiwi', 'Veggies', 100, 'kol_merah_pertiwi.png', 2),
-(3, 'Wagyu A5 100gr', 150000, 'Dagin Wagyu A5 produksi Jepang', 'Meat', 50, 'wagyu_a5_stark.jpg', 7);
+(2, 'Kol Merah Pertiwi 500 gr', 9000, 'Kol merah segar merek Pertiwi', 'Veggies', 100, 'kol_merah_pertiwi.png', 2),
+(3, 'Wagyu A5 100 gr', 150000, 'Daging Wagyu A5 produksi Jepang', 'Meat', 50, 'wagyu_a5_stark.jpg', 7),
+(4, 'Roasted Garlic 192 gr', 50000, 'Seasoning/bumbu dapur', 'Spices', 100, 'roasted-garlic.jpg', 2),
+(5, 'Apel Hijau 1 kg', 75000, 'Apel hijau Granny Smith', 'Fruits', 500, 'apel-hijau.jpg', 2),
+(6, 'Jeruk Limau 100 gr', 8000, 'Jeruk limau langsung dari kebun', 'Fruits', 80, 'jeruk-limau.jpg', 2),
+(7, 'Iga Sapi 500 gr', 70000, 'Daging iga sapi cocok untuk sop', 'Meat', 120, 'daging-iga.jpg', 7),
+(8, 'Tenderloin 1 kg', 195000, 'Daging sapi has dalam/tenderloin', 'Meat', 250, 'tenderloin.jpg', 7),
+(9, 'Sirloin 1 kg', 180000, 'Daging sapi has luar/sirloin', 'Meat', 250, 'sirloin.jpg', 7),
+(10, 'Daging Sapi Fillet 1 kg', 140000, 'Daging sapi fillet fresh segar', 'Meat', 264, 'daging-sapi-fillet.jpg', 7),
+(11, 'Thyme 100 gr', 50000, 'Premium spices thyme', 'Spices', 65, 'thyme.jpg', 2),
+(12, 'Melon Fresh', 42500, 'Buah melon segar 1900 gram', 'Fruits', 15, 'melon.jpg', 6),
+(13, 'Melon Import Crown', 2250000, 'Buah melon Crown import Jepang 1500 gram', 'Fruits', 10, 'melon-crown.jpg', 6),
+(14, 'Bawang Bombay', 8300, 'Bawang bombay 120-170 gram/harga per pcs', 'Veggies', 76, 'bawang-bombay.jpg', 6),
+(15, 'Kentang 1 kg', 19900, 'Kentang Dieng 1 kg', 'Veggies', 137, 'kentang-dieng.jpg', 6),
+(16, 'Ribeye Meltique Beef 200 gr', 89000, 'Ribeye Meltique Beef (AUS) 200 gr', 'Meat', 43, 'ribeye-meltique.jpg', 6),
+(17, 'Bakso Sapi 25 pcs', 26500, 'Bakso sapi bungkus isi 25 pcs/650 gr', 'Meat', 97, 'bakso-sapi.jpg', 6);
 
 -- --------------------------------------------------------
 
@@ -391,7 +405,7 @@ ALTER TABLE `cartline`
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `orderline`
