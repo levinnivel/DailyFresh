@@ -17,14 +17,15 @@ func Login(c *gin.Context) {
 
 	login := Repo.Login(email, password)
 
-	var responses Response.Response
+	var responses Response.LoginResponse
 
 	if login.ID != 0 {
-		SuccessStatus := Auth.GenerateToken(c, login.ID, login.Name, login.TypePerson)
+		SuccessStatus, token := Auth.GenerateToken(c, login.ID, login.Name, login.TypePerson)
 		if SuccessStatus {
 			responses.Message = "Login Success"
 			responses.Status = 200
 			responses.Data = login.TypePerson
+			responses.Token = token
 		} else {
 			responses.Message = "Login Error"
 			responses.Status = 400
