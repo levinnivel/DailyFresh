@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2022 at 04:52 PM
+-- Generation Time: May 12, 2022 at 11:40 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 8.0.13
 
@@ -106,6 +106,7 @@ CREATE TABLE `goods` (
   `name` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `category` varchar(255) NOT NULL,
   `stock` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
   `seller_id` int(11) NOT NULL
@@ -115,10 +116,10 @@ CREATE TABLE `goods` (
 -- Dumping data for table `goods`
 --
 
-INSERT INTO `goods` (`id`, `name`, `price`, `description`, `stock`, `image`, `seller_id`) VALUES
-(1, 'Wortel 800 gr', 8000, 'Wortel segar', 10, 'wortel-800-gr.png', 2),
-(2, 'Kol Merah Pertiwi 500gr', 9000, 'Kol merah segar merek Pertiwi', 100, 'kol_merah_pertiwi.png', 2),
-(3, 'Wagyu A5 100gr', 150000, 'Dagin Wagyu A5 produksi Jepang', 50, 'wagyu_a5_stark.jpg', 7);
+INSERT INTO `goods` (`id`, `name`, `price`, `description`, `category`, `stock`, `image`, `seller_id`) VALUES
+(1, 'Wortel 800 gr', 8000, 'Wortel segar', 'Veggies', 10, 'wortel-800-gr.png', 2),
+(2, 'Kol Merah Pertiwi 500gr', 9000, 'Kol merah segar merek Pertiwi', 'Veggies', 100, 'kol_merah_pertiwi.png', 2),
+(3, 'Wagyu A5 100gr', 150000, 'Dagin Wagyu A5 produksi Jepang', 'Meat', 50, 'wagyu_a5_stark.jpg', 7);
 
 -- --------------------------------------------------------
 
