@@ -27,7 +27,7 @@ func GetGoods(id string) []Model.Goods {
 	var goodies []Model.Goods
 	for rows.Next() {
 		if err := rows.Scan(&goods.ID, &goods.Name, &goods.Price, &goods.Description,
-			&goods.Stock, &goods.Image, &goods.SellerID); err != nil {
+			&goods.Category, &goods.Stock, &goods.Image, &goods.SellerID); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			goodies = append(goodies, goods)
@@ -53,7 +53,7 @@ func GetGoodsBySeller(id string) []Model.Goods {
 	var goodies []Model.Goods
 	for rows.Next() {
 		if err := rows.Scan(&goods.ID, &goods.Name, &goods.Price, &goods.Description,
-			&goods.Stock, &goods.Image, &goods.SellerID); err != nil {
+			&goods.Category, &goods.Stock, &goods.Image, &goods.SellerID); err != nil {
 			log.Fatal(err.Error())
 		} else {
 			goodies = append(goodies, goods)
@@ -68,10 +68,11 @@ func PostGoods(Goods Model.Goods) bool {
 	defer db.Close()
 
 	_, errQuery := db.Exec("INSERT INTO goods "+
-		"(name, price, description, stock, image, seller_id) values (?,?,?,?,?,?)",
+		"(name, price, description, category, stock, image, seller_id) values (?,?,?,?,?,?,?)",
 		Goods.Name,
 		Goods.Price,
 		Goods.Description,
+		Goods.Category,
 		Goods.Stock,
 		Goods.Image,
 		Goods.SellerID,

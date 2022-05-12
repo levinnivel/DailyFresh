@@ -7,8 +7,11 @@
 	"item": [
 		{
 			"name": "Login",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "formdata",
@@ -16,14 +19,12 @@
 						{
 							"key": "email",
 							"value": "levinnivel@gmail.com",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						},
 						{
 							"key": "password",
 							"value": "levinnivel",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						}
 					]
 				},
@@ -54,8 +55,11 @@
 		},
 		{
 			"name": "Logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "urlencoded",
@@ -95,6 +99,15 @@
 			"response": []
 		},
 		{
+			"name": "Ban Account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Goods",
 			"request": {
 				"method": "GET",
@@ -115,18 +128,80 @@
 		{
 			"name": "Post Goods",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Wagyu A5 100gr",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "150000",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Dagin Wagyu A5 produksi Jepang",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"value": "wagyu_a5_stark.jpg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/goods?seller_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"goods"
+					],
+					"query": [
+						{
+							"key": "seller_id",
+							"value": "2"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create Cart",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://localhost:8080/cart?customer_id=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart"
+					],
+					"query": [
+						{
+							"key": "customer_id",
+							"value": "3"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -142,18 +217,79 @@
 		{
 			"name": "Add to Cart Line",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "quantity",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "goods_id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/cart/detail/add?cart_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"detail",
+						"add"
+					],
+					"query": [
+						{
+							"key": "cart_id",
+							"value": "1"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Remove from Cart Line",
 			"request": {
-				"method": "GET",
+				"method": "DELETE",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "goods_id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/cart/detail/remove?cart_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"detail",
+						"remove"
+					],
+					"query": [
+						{
+							"key": "cart_id",
+							"value": "1"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -270,18 +406,103 @@
 		{
 			"name": "Post Customer",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Marc Spector",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "marc@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "marc123",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "123123123",
+							"type": "text"
+						},
+						{
+							"key": "cust_address",
+							"value": "Jl. Mesir 12",
+							"type": "text"
+						},
+						{
+							"key": "balance",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Post Seller",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Tony Stark",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "stark@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "ironman",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "01231351661",
+							"type": "text"
+						},
+						{
+							"key": "seller_address",
+							"value": "Jl New York 53",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/seller",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"seller"
+					]
+				}
 			},
 			"response": []
 		},
@@ -355,6 +576,64 @@
 				"method": "GET",
 				"header": [],
 				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Post Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "customer_id",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "goods_id",
+							"value": "1,2",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "10,50",
+							"type": "text"
+						},
+						{
+							"key": "method",
+							"value": "BCA",
+							"type": "text"
+						},
+						{
+							"key": "rating",
+							"value": "5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"orders"
+					]
+				}
 			},
 			"response": []
 		}
