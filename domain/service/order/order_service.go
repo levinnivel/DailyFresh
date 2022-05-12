@@ -158,10 +158,39 @@ func PostOrders(c *gin.Context) {
 				TotalHargaInsert,
 			)
 
-			if errQuery == nil {
-				fmt.Println("Success Insert OrderLine")
+			//Get stock dari DB
+			query2 := "SELECT stock FROM goods WHERE id=" + GoodsArr[i] + ";"
+			rows, err2 := db.Query(query2)
+			if err2 != nil {
+				log.Println(err2)
+			}
+			var goodsS ModelGoods.Goods
+			for rows.Next() {
+				if err2 := rows.Scan(&goodsS.Stock); err2 != nil {
+					log.Fatal(err2.Error())
+				}
+			}
+
+			//Perhitungan Update Stock
+			var Stock int
+			TempQuantity2, _ := strconv.Atoi(QuantityArr[i])
+			Stock = goodsS.Stock - int(TempQuantity2)
+			fmt.Println(".")
+			fmt.Println("QuantityArr:", QuantityArr[i])
+			fmt.Println("goodsS.Stock:", goodsS.Stock)
+			fmt.Println("TempQuantity2:", TempQuantity2)
+			fmt.Println("Stock Sekarang:", Stock)
+			fmt.Println(".")
+
+			_, errQuery4 := db.Exec("UPDATE goods SET stock=? WHERE id=?",
+				Stock,
+				GoodsArr[i],
+			)
+
+			if errQuery == nil && errQuery4 == nil {
+				fmt.Println("Success Insert OrderLine & Update Stock")
 			} else {
-				fmt.Println("Failed Insert OrderLine")
+				fmt.Println("Failed Insert OrderLine & Update Stock")
 			}
 		}
 		_, errQuery2 := db.Exec("INSERT INTO payment(order_id, method, amount) values (?,?,?)",
