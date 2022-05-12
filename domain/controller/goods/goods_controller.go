@@ -9,7 +9,9 @@ import (
 func Routes(router *gin.Engine) {
 	router.GET("/goods", Service.GetGoods)
 	router.GET("/goods/by_seller", Service.GetGoodsBySeller)
+	router.GET("/goods/category", Service.GetGoodsByCategory)
 	router.POST("/goods", Service.PostGoods)
+	router.PUT("/goods", Service.UpdateGoods)
 
 	router.POST("/cart", Service.CreateCart)
 
