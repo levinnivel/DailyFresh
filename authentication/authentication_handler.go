@@ -84,6 +84,20 @@ func ResetUserToken(c *gin.Context) bool {
 // 	}
 // }
 
+// func Authenticate(c *gin.Context, accessType string) bool {
+// 	isValidToken := ValidateUserToken(c, accessType)
+// 	if !isValidToken {
+// 		var responses Response.Response
+// 		responses.Message = "Unauthorized Access"
+// 		responses.Status = 401
+// 		c.Header("Content-Type", "application/json")
+// 		c.JSON(http.StatusOK, responses)
+// 		return false
+// 	} else {
+// 		return true
+// 	}
+// }
+
 func Authenticate(c *gin.Context, accessType string) bool {
 	isValidToken := ValidateUserToken(c, accessType)
 	if !isValidToken {

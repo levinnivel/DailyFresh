@@ -16,17 +16,17 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func Shipments(c *gin.Context) {
+func GetShipments(c *gin.Context) {
 	id := c.PostForm("id")
 	orders := Repo.GetShipments(id)
 
 	var responses Response.Response
 	if orders != nil {
-		responses.Message = "Get Payment success"
+		responses.Message = "Get Shipments success"
 		responses.Status = 200
 		responses.Data = orders
 	} else {
-		responses.Message = "Get Payment failed"
+		responses.Message = "Get Shipments failed"
 		responses.Status = 400
 	}
 	c.Header("Content-Type", "application/json")
