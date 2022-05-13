@@ -24,7 +24,7 @@ func Login(c *gin.Context) {
 		if SuccessStatus {
 			responses.Message = "Login Success"
 			responses.Status = 200
-			responses.Data = login.TypePerson
+			responses.Data = login
 			responses.Token = token
 		} else {
 			responses.Message = "Login Error"
